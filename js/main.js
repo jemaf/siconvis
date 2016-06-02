@@ -1,5 +1,7 @@
 const FILE_PATH = "res/data.csv";
 
+var CONTAINER_STACK = "#container-stack";
+
 
 /**
  *	function that filter data for streamgraph
@@ -67,8 +69,8 @@ var handleData = function(data) {
  */
 var draw = function(element, data) {
 
-	var width = 1080,	//dimensions of the visualization
-    	height = 500;
+  var width = 960, //dimensions of the visualization
+     height = 500;
 
     // initialize stack graphic
 	var stack = d3.layout.stack().offset("silhouette");
@@ -108,7 +110,7 @@ var draw = function(element, data) {
 	    .y0(function(d) { return y(d.y0); })
 	    .y1(function(d) { return y(d.y0 + d.y); });
 
-	var svg = d3.select(container).append("svg")
+	var svg = d3.select(element).append("svg")
 	    .attr("width", width)
 	    .attr("height", height);
 
@@ -155,5 +157,5 @@ dsvParser(FILE_PATH, function(error, data) {
 	});	
 
 	var filteredData = handleData(data);
-	draw("#container", filteredData);
+	draw(CONTAINER_STACK, filteredData);
 });

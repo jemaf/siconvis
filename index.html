@@ -3,21 +3,76 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
         <title>Olá D3js</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <!-- Add your site or application content here -->
-        <div>
-        	<div id="container">
-        	</div>
+
+        <nav class="indigo darken-4" role="navigation">
+            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
+              <ul class="right hide-on-med-and-down">
+                <li><a href="#">Visualização de Dados</a></li>
+              </ul>
+            </div>
+        </nav>
+        <div class="section indigo lighten-5" id="index-banner">
+            <div class="container">
+              <h1 class="header indigo-text">SICONVIS</h1> <h5 class="header col s12 light">Uma visualização de como são alocados as verbas de convênios do governo federal</h5>
+            </div>
         </div>
 
+
+        <div class="container">
+          <div class="section">
+          <h5>Contrapartida Total por Estado</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat.</p>
+            <div class="row">
+              <div class="col s12" id="container-stack">
+              </div>
+              <div class="col s1 offset-s10">
+                <a class="waves-effect waves-light btn">Toggle</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="page-footer indigo">
+        <div class="container">
+          <div class="row">
+            <div class="col l8 s12">
+              <h5 class="white-text">About</h5>
+              <p class="grey-text text-lighten-4">
+                Os dados deste trabalho foram coletados do Portal de Convênios do Governo Federal (SICONV), sendo portanto de uso público, conforme estipulado na Lei de Acesso à Informação (Lei nº 12.527 de 2011).
+              </p>
+            </div>
+            <div class="col l4 s12">
+              <h5 class="white-text">Integrantes</h5>
+              <ul>
+                <li><a class="white-text" href="http://jemaf.github.io">João Eduardo Montandon</a></li>
+                <li><a class="white-text" href="#!">José Laerte Xavier</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+          Made by <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+          </div>
+        </div>
+        </footer>
        
         <script src="js/vendor/d3.min.js"></script>
         <script src="js/vendor/alasql.min.js"></script>
-        <!-- <script src="js/vendor/alasql-worker.min.js"></script> -->
         <script src="js/main.js"></script>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>
