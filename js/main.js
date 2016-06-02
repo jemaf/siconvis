@@ -27,10 +27,16 @@ var handleData = function(data) {
 			return !isNaN(innerElement.ano) && !isNaN(innerElement.mes);
 		});
 
+		var totalAno = 0;
+		element.items.forEach(function(param){
+			totalAno += param.total;
+		});
+
 		//convert date to JS format
 		element.items = element.items.map(function(innerElement) {
 			var dateFormat = d3.time.format("%Y %m");
-			return {date: dateFormat.parse(innerElement.ano + " " + innerElement.mes), value: innerElement.total};
+			return {date: dateFormat.parse(innerElement.ano + " " + innerElement.mes), value: innerElement.total,
+					yearValue: totalAno};
 		});
 
 		//sort each item array
@@ -48,11 +54,16 @@ var handleData = function(data) {
 
 	// normalize date to include every date between first and last one
 	res.records.forEach(function(element) {
-	
+		
+		var totalAno = 0;
+		element.items.forEach(function(param){
+			totalAno += param.value;
+		});
+
 		var currentDate = new Date(res.firstDate.getTime());
 		for (var i = 0; currentDate.getTime() <= res.lastDate.getTime(); i++) {
 			if (!element.items[i] || element.items[i].date.getTime() != currentDate.getTime()) {
-				element.items.splice(i, 0, {date: new Date(currentDate.getTime()), value: 0});
+				element.items.splice(i, 0, {date: new Date(currentDate.getTime()), value: 0, yearValue: totalAno});
 			}
 			currentDate.setMonth(currentDate.getMonth() + 1);
 		}
@@ -92,14 +103,34 @@ var draw = function(element, data) {
 		return newItems;
 	});
 
-	layers = stack(d3Data);
+	d3PercentageData = data.records.map(function(element) {
+		var newItems = element.items.map(function(innerElement) {
+			// convert to log scale
+			if (innerElement.value > 0)	
+				innerElement.value = Math.log(innerElement.value);
+
+			if (innerElement.yearValue > 0)
+				innerElement.yearValue = Math.log(innerElement.yearValue);
+			
+			return {x: innerElement.date, y: innerElement.value / innerElement.yearValue * 100};
+		});
+
+		newItems.sort(function(a, b) {
+          return a.x.getTime() - b.x.getTime();
+        });
+		
+		return newItems;
+	});
+
+	layers0 = stack(d3Data);
+	layers1 = stack(d3PercentageData);
 
 	var x = d3.time.scale()
 		.domain([data.firstDate, data.lastDate])
     	.range([0, width]);
 
 	var y = d3.scale.linear()
-	    .domain([0, d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
+	    .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
 	    .range([height, 0]);
 
 	var color = d3.scale.linear()
@@ -115,12 +146,25 @@ var draw = function(element, data) {
 	    .attr("height", height);
 
 	svg.selectAll("path")
-	    .data(layers)
+	    .data(layers0)
 	  .enter().append("path")
 	    .attr("d", area)
 	    .style("fill", function() { return color(Math.random()); });
-};
 
+	function transition() {
+		d3.selectAll("path")
+		  .data(function() {
+		    var d = layers1;
+		    layers1 = layers0;
+		    return layers0 = d;
+		  })
+		.transition()
+		  .duration(2500)
+		  .attr("d", area);
+	}
+
+	$("#toggle-stack").click(transition);
+};
 
 //////////////////////////////////////
 ////    PROCESSAMENTO DOS DADOS   ////
