@@ -179,16 +179,19 @@ var draw = function(element, data) {
 	svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+      .call(xAxis)
+      .style("font-size","10px");
 
   	svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + width + ", 0)")
-      .call(yAxis.orient("right"));
+      .call(yAxis.orient("right"))
+      .style("font-size","10px");
 
   	svg.append("g")
       .attr("class", "y axis")
-      .call(yAxis.orient("left"));
+      .call(yAxis.orient("left"))
+      .style("font-size","10px");
 
 	function transition() {
 		d3.selectAll("path")
