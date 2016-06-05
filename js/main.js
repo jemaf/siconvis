@@ -79,9 +79,12 @@ var handleData = function(data) {
  *	@param element id of the element that will render the visualization
  */
 var draw = function(element, data) {
+	var margin = {top: 20, right: 40, bottom: 30, left: 40};
+	var width = 960 - margin.left - margin.right;
+	var height = 500 - margin.top - margin.bottom;
 
-  var width = 960, //dimensions of the visualization
-     height = 500;
+  	//var width = 960, //dimensions of the visualization
+     //height = 500;
 
     // initialize stack graphic
 	var stack = d3.layout.stack().offset("silhouette");
@@ -133,6 +136,17 @@ var draw = function(element, data) {
 	    .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
 	    .range([height, 0]);
 
+	var xAxis = d3.svg.axis()
+    	.scale(x)
+    	.orient("bottom")
+    	.ticks(d3.time.years);
+
+	var yAxis = d3.svg.axis()
+    	.scale(y);
+
+	var yAxisr = d3.svg.axis()
+    	.scale(y);
+
 	var color = d3.scale.linear()
 	    .range(["#aad", "#556"]);
 
@@ -142,14 +156,30 @@ var draw = function(element, data) {
 	    .y1(function(d) { return y(d.y0 + d.y); });
 
 	var svg = d3.select(element).append("svg")
-	    .attr("width", width)
-	    .attr("height", height);
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	   .append("g")
+    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
 
 	svg.selectAll("path")
 	    .data(layers0)
 	  .enter().append("path")
 	    .attr("d", area)
 	    .style("fill", function() { return color(Math.random()); });
+
+	svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  	svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + width + ", 0)")
+      .call(yAxis.orient("right"));
+
+  	svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis.orient("left"));
 
 	function transition() {
 		d3.selectAll("path")
