@@ -231,7 +231,9 @@ var draw = function(element, data) {
       div.transition()		
         .duration(500)		
         .style("opacity", 0);
-  })
+  });
+
+ 	$(CONTAINER_STACK + " > h5").hide();
 };
 
 //////////////////////////////////////
