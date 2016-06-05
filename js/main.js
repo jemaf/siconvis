@@ -86,6 +86,18 @@ var draw = function(element, data) {
   	//var width = 960, //dimensions of the visualization
      //height = 500;
 
+    //colorRange = ["#e69a61", "#9817ff", "#18c61a", "#33b4ff", "#c9167e", "#297853", "#d7011b", 
+    //"#7456c7", "#7e6276", "#afb113", "#fd879c", "#fb78fa", "#24c373", "#45bbc5", "#766b21", "#abad93", 
+    //"#c19ce3", "#fd8f11", "#2f56ff", "#307a11", "#b3483c", "#0d7396", "#94b665", "#9d4d91", "#b807c8", 
+    //"#086cbf", "#a2abc5"];
+
+    colorRange = ["#015eff", "#0cc402", "#aea7a5", "#ff15ae", "#d99f07", "#11a5fe", "#037e43", "#ba4455", 
+    "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe",
+    "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
+    
+
+    strokecolor = colorRange[0];
+    
     // initialize stack graphic
 	var stack = d3.layout.stack().offset("silhouette");
 
@@ -136,6 +148,9 @@ var draw = function(element, data) {
 	    .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
 	    .range([height, 0]);
 
+	var z = d3.scale.ordinal()
+    	.range(colorRange);
+
 	var xAxis = d3.svg.axis()
     	.scale(x)
     	.orient("bottom")
@@ -165,7 +180,7 @@ var draw = function(element, data) {
 	    .data(layers0)
 	  .enter().append("path")
 	    .attr("d", area)
-	    .style("fill", function() { return color(Math.random()); });
+	    .style("fill", function(d, i) { return z(i); });
 
 	svg.append("g")
       .attr("class", "x axis")
