@@ -28,14 +28,23 @@
 
         <div class="container">
           <div class="section">
-          <h5>Contrapartida Total por Estado</h5>
-          <p>Esta visualização apresenta a variação entre os anos de 2009 e 2016 do total (em valores absolutos) de contrapartida paga por cada estado quando da assinatura de um convênio com o Governo Federal. Pressione o botão abaixo para normalizar os dados em valores percentuais anuais da contrapartida de cada estado. Ambas as visualizações estão em <b>escala logarítmica<b>.</p>
-            <div class="row">
-              <div class="col s12" style="height: 500px;" id="container-stack">
-              <h5>Carregando...</h5>
+          <div class="row">
+              <div class="col s6">
+                <div id="map"></div>
               </div>
-              <div class="col s1 offset-s10">
-                <a class="waves-effect waves-light btn red lighten-2" id="toggle-stack">Normalizar</a>
+              <div class="col s6">
+                <div id="radar"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s4">
+                <div id="stack-global"></div>
+              </div>
+              <div class="col s4">
+                <div id="stack-counterpart"></div>
+              </div>
+              <div class="col s4">
+                <div id="stack-invest"></div>
               </div>
             </div>
           </div>
@@ -69,8 +78,18 @@
         <script src="js/vendor/d3.min.js"></script>
         <script src="js/vendor/alasql.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="js/main.js"></script>
-        
         <script type="text/javascript" src="js/vendor/materialize.min.js"></script>
+        <script src="//d3js.org/topojson.v1.min.js"></script>
+
+        
+        <script src="js/constants.js"></script>
+        <script src="js/data.js"></script>
+        <script src="js/map.js"></script>
+        
+        <script type="text/javascript" charset="utf-8"> 
+          loadData(function() {
+            mapVisualization.init();
+          });
+        </script>
     </body>
 </html>
