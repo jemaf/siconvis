@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -37,13 +37,13 @@
               </div>
             </div>
             <div class="row">
-              <div class="col s4">
+              <div class="col s12">
                 <div id="stack-global"></div>
               </div>
-              <div class="col s4">
+              <div class="col s6">
                 <div id="stack-counterpart"></div>
               </div>
-              <div class="col s4">
+              <div class="col s6">
                 <div id="stack-invest"></div>
               </div>
             </div>
@@ -86,12 +86,17 @@
         <script src="js/data.js"></script>
         <script src="js/map.js"></script>
         <script src="js/radar.js"></script>
+        <script src="js/stacked.js"></script>
+
 
         
         <script type="text/javascript" charset="utf-8"> 
           loadData(function() {
             mapVisualization.init();
             radarVisualization.init();
+            stackedVisualization.init(STACK_TOTAL_CONTAINER, 960, 300);
+            stackedVisualization.init(STACK_COUNTERPART_CONTAINER, 480, 250);
+            stackedVisualization.init(STACK_INVESTMENT_CONTAINER, 480, 250);
           });
         </script>
     </body>

@@ -55,3 +55,17 @@ div.tooltip {
 #radar .tooltip {
   fill: #333333;
 }
+
+
+/************************ CSS for stack *************************/
+#stack-global, #stack-counterpart, #stack-invest {
+  font: 10px sans-serif;
+}
+
+#stack-global .axis path, #stack-counterpart .axis path, #stack-invest .axis path,
+#stack-global .axis line, #stack-counterpart .axis line, #stack-invest .axis line,
+{
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
