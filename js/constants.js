@@ -9,3 +9,4 @@ const MAP_FILE_PATH          = "res/brazil_map.json";
 
 // Containers constants
 const MAP_CONTAINER          = "#map";
+const RADAR_CONTAINER        = "#radar";
