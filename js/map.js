@@ -5,14 +5,14 @@ var mapVisualization = {};
 
 
 mapVisualization.init = function() {
-  var width = 480,
-      height = 500,
+  var width = 384,
+      height = 380,
       centered;
 
   var projection = d3.geo.mercator()
-      .scale(550)
+      .scale(450)
       .center([-55, -10])
-    .translate([width / 2, height / 2]);
+    .translate([width / 2, height / 2 - 50]);
 
   var path = d3.geo.path()
       .projection(projection);

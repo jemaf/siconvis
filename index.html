@@ -30,21 +30,28 @@
           <div class="section">
           <div class="row">
               <div class="col s6">
-                <div id="map"></div>
+                <div class="col s12">
+                  <h4>Pergunta 1</h4>
+                  <div id="map"></div>
+                </div>
+                <div class="col s12">
+                  <h4>Pergunta 2</h4>
+                  <div id="radar"></div>
+                </div>  
               </div>
               <div class="col s6">
-                <div id="radar"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col s12">
-                <div id="stack-global"></div>
-              </div>
-              <div class="col s6">
-                <div id="stack-counterpart"></div>
-              </div>
-              <div class="col s6">
-                <div id="stack-invest"></div>
+                <div class="col s12">
+                  <h4>Pergunta 3</h4>
+                  <div id="stack-global"></div>
+                </div>
+                <div class="col s12">
+                  <h4>Pergunta 4</h4>
+                  <div id="stack-counterpart"></div>
+                </div>
+                <div class="col s12">
+                  <h4>Pergunta 5</h4>
+                  <div id="stack-invest"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -94,7 +101,7 @@
           loadData(function() {
             mapVisualization.init();
             radarVisualization.init();
-            stackedVisualization.init(STACK_TOTAL_CONTAINER, 960, 300);
+            stackedVisualization.init(STACK_TOTAL_CONTAINER, 480, 250);
             stackedVisualization.init(STACK_COUNTERPART_CONTAINER, 480, 250);
             stackedVisualization.init(STACK_INVESTMENT_CONTAINER, 480, 250);
           });
