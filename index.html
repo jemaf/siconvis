@@ -100,10 +100,55 @@
         <script type="text/javascript" charset="utf-8"> 
           loadData(function() {
             mapVisualization.init();
-            radarVisualization.init();
-            stackedVisualization.init(STACK_TOTAL_CONTAINER, 480, 250);
-            stackedVisualization.init(STACK_COUNTERPART_CONTAINER, 480, 250);
-            stackedVisualization.init(STACK_INVESTMENT_CONTAINER, 480, 250);
+
+              var data = [
+                  [//iPhone
+                  {axis:"Battery Life",value:0.22},
+                  {axis:"Brand",value:0.28},
+                  {axis:"Contract Cost",value:0.29},
+                  {axis:"Design And Quality",value:0.17},
+                  {axis:"Have Internet Connectivity",value:0.22},
+                  {axis:"Large Screen",value:0.02},
+                  {axis:"Price Of Device",value:0.21},
+                  {axis:"To Be A Smartphone",value:0.50}      
+                  ],[//Samsung
+                  {axis:"Battery Life",value:0.27},
+                  {axis:"Brand",value:0.16},
+                  {axis:"Contract Cost",value:0.35},
+                  {axis:"Design And Quality",value:0.13},
+                  {axis:"Have Internet Connectivity",value:0.20},
+                  {axis:"Large Screen",value:0.13},
+                  {axis:"Price Of Device",value:0.35},
+                  {axis:"To Be A Smartphone",value:0.38}
+                  ],[//Nokia Smartphone
+                  {axis:"Battery Life",value:0.26},
+                  {axis:"Brand",value:0.10},
+                  {axis:"Contract Cost",value:0.30},
+                  {axis:"Design And Quality",value:0.14},
+                  {axis:"Have Internet Connectivity",value:0.22},
+                  {axis:"Large Screen",value:0.04},
+                  {axis:"Price Of Device",value:0.41},
+                  {axis:"To Be A Smartphone",value:0.30}
+                  ]
+                ];
+
+            radar = radarChart();
+
+            radar()
+                .container(RADAR_CONTAINER)
+                .margin({top: 70, right: 70, bottom: 70, left: 70})
+                .width(250)
+                .height(250)
+                .data(data)
+                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
+                .maxValue(0.5)
+                .levels(5)
+                .roundStrokes(true)
+                .draw();
+
+            // stackedVisualization.init(STACK_TOTAL_CONTAINER, 480, 250);
+            // stackedVisualization.init(STACK_COUNTERPART_CONTAINER, 480, 250);
+            // stackedVisualization.init(STACK_INVESTMENT_CONTAINER, 480, 250);
           });
         </script>
     </body>
