@@ -101,7 +101,7 @@
           loadData(function() {
             mapVisualization.init();
 
-              var data = [
+              var radarData = [
                   [//iPhone
                   {axis:"Battery Life",value:0.22},
                   {axis:"Brand",value:0.28},
@@ -132,6 +132,27 @@
                   ]
                 ];
 
+              var stackData = [
+                  {key: "Group1", value: 37, date: "04/23/12"},
+                  {key: "Group2", value: 12, date: "04/23/12"},
+                  {key: "Group3", value: 46, date: "04/23/12"},
+                  {key: "Group1", value: 32, date: "04/24/12"},
+                  {key: "Group2", value: 19, date: "04/24/12"},
+                  {key: "Group3", value: 42, date: "04/24/12"},
+                  {key: "Group1", value: 45, date: "04/25/12"},
+                  {key: "Group2", value: 16, date: "04/25/12"},
+                  {key: "Group3", value: 44, date: "04/25/12"},
+                  {key: "Group1", value: 24, date: "04/26/12"},
+                  {key: "Group2", value: 52, date: "04/26/12"},
+                  {key: "Group3", value: 64, date: "04/26/12"}
+                ];
+              var format = d3.time.format("%m/%d/%y");
+
+              stackData.forEach(function(d) {
+                d.x = format.parse(d.date);
+                d.y = +d.value;
+              });
+
             radar = radarChart();
 
             radar()
@@ -139,16 +160,54 @@
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
                 .width(250)
                 .height(250)
-                .data(data)
+                .data(radarData)
                 .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
                 .maxValue(0.5)
                 .levels(5)
                 .roundStrokes(true)
                 .draw();
 
-            // stackedVisualization.init(STACK_TOTAL_CONTAINER, 480, 250);
-            // stackedVisualization.init(STACK_COUNTERPART_CONTAINER, 480, 250);
-            // stackedVisualization.init(STACK_INVESTMENT_CONTAINER, 480, 250);
+            stack1 = stackedChart();
+            stack2 = stackedChart();
+            stack3 = stackedChart();
+
+            stack1
+                .container(STACK_TOTAL_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(450)
+                .height(250)
+                .data(stackData)
+                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
+                .xAxis({ orientation: "bottom", ticks: d3.time.days })
+                .yAxis({ orientation: "left" })
+                .nestKey("key")
+                .draw();
+
+
+            stack2
+                .container(STACK_COUNTERPART_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(450)
+                .height(250)
+                .data(stackData)
+                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
+                .xAxis({ orientation: "bottom", ticks: d3.time.days })
+                .yAxis({ orientation: "left" })
+                .nestKey("key")
+                .draw();
+
+
+            stack3
+                .container(STACK_INVESTMENT_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(450)
+                .height(250)
+                .data(stackData)
+                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
+                .xAxis({ orientation: "bottom", ticks: d3.time.days })
+                .yAxis({ orientation: "left" })
+                .nestKey("key")
+                .draw();
           });
         </script>
     </body>

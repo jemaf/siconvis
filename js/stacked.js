@@ -1,90 +1,170 @@
-var stackedVisualization = {};
+/*
+  File that initializes and draws the stacked chart. 
+
+  Based on the example provided at the link 
+*/
+
+function stackedChart() {
+
+  function init() {
+    return init
+            .width(400)
+            .height(200)
+            .margin({top: 20, right: 30, bottom: 30, left: 40})
+            .color(d3.scale.category20c())
+            .xAxis({ orientation: "bottom", ticks: d3.time.days })
+            .yAxis({ orientation: "left" })
+            .nestKey("key");
+  }
 
 
-stackedVisualization.init = function(container, width, height) {
+  init.draw = function() {
 
-	var data = [
-		{key: "Group1", value: 37, date: "04/23/12"},
-		{key: "Group2", value: 12, date: "04/23/12"},
-		{key: "Group3", value: 46, date: "04/23/12"},
-		{key: "Group1", value: 32, date: "04/24/12"},
-		{key: "Group2", value: 19, date: "04/24/12"},
-		{key: "Group3", value: 42, date: "04/24/12"},
-		{key: "Group1", value: 45, date: "04/25/12"},
-		{key: "Group2", value: 16, date: "04/25/12"},
-		{key: "Group3", value: 44, date: "04/25/12"},
-		{key: "Group1", value: 24, date: "04/26/12"},
-		{key: "Group2", value: 52, date: "04/26/12"},
-		{key: "Group3", value: 64, date: "04/26/12"}
-	];
+    var x = d3.time.scale()
+        .range([0, init.width()]);
 
-	var format = d3.time.format("%m/%d/%y");
+    var y = d3.scale.linear()
+        .range([init.height(), 0]);
 
-  var margin = {top: 20, right: 30, bottom: 30, left: 40},
-      width = width - margin.left - margin.right,
-      height = height - margin.top - margin.bottom;
+    var z = init.color();
 
-  var x = d3.time.scale()
-      .range([0, width]);
+    var stack = d3.layout.stack()
+        .offset("zero")
+        .values(function(d) { return d.values; })
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; });
 
-  var y = d3.scale.linear()
-      .range([height, 0]);
+    var nest = d3.nest()
+        .key(function(d) { return d[nestKey]; });
 
-  var z = d3.scale.category20c();
+    var area = d3.svg.area()
+        .interpolate("cardinal")
+        .x(function(d) { return x(d.x); })
+        .y0(function(d) { return y(d.y0); })
+        .y1(function(d) { return y(d.y0 + d.y); });
 
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .ticks(d3.time.days);
+    var svg = d3.select(container).append("svg")
+        .attr("width", init.width() + init.margin().left + init.margin().right)
+        .attr("height", init.height() + init.margin().top + init.margin().bottom)
+      .append("g")
+        .attr("transform", "translate(" + init.margin().left + "," + init.margin().top + ")");
 
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
+    var layers = stack(nest.entries(init.data()));
 
-  var stack = d3.layout.stack()
-      .offset("zero")
-      .values(function(d) { return d.values; })
-      .x(function(d) { return d.date; })
-      .y(function(d) { return d.value; });
+    x.domain(d3.extent(init.data(), function(d) { return d.x; }));
+    y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
 
-  var nest = d3.nest()
-      .key(function(d) { return d.key; });
+    svg.selectAll(".layer")
+        .data(layers)
+      .enter().append("path")
+        .attr("class", "layer")
+        .attr("d", function(d) { return area(d.values); })
+        .style("fill", function(d, i) { return z(i); });
 
-  var area = d3.svg.area()
-      .interpolate("cardinal")
-      .x(function(d) { return x(d.date); })
-      .y0(function(d) { return y(d.y0); })
-      .y1(function(d) { return y(d.y0 + d.y); });
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + init.height() + ")")
+        .call(init.xAxis());
 
-  var svg = d3.select(container).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(init.yAxis());
+  };
 
-  data.forEach(function(d) {
-    d.date = format.parse(d.date);
-    d.value = +d.value;
-  });
 
-  var layers = stack(nest.entries(data));
+  init.container = function(value) {
+    if (!arguments.length) 
+      return container;
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.y0 + d.y; })]);
+    container = value;
+    return init;
+  };
 
-  svg.selectAll(".layer")
-      .data(layers)
-    .enter().append("path")
-      .attr("class", "layer")
-      .attr("d", function(d) { return area(d.values); })
-      .style("fill", function(d, i) { return z(i); });
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+  init.margin = function(value) {
+    if (!arguments.length) 
+      return margin;
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
-};
+    margin = value;
+    return init;
+  };
+
+
+  init.width = function(value) {
+    if (!arguments.length) 
+      return width;
+
+    width = value;
+    return init;
+  };
+
+
+  init.height = function(value) {
+    if (!arguments.length) 
+      return height;
+
+    height = value;
+    return init;
+  };
+
+
+  init.data = function(value) {
+    if (!arguments.length) 
+      return data;
+
+    data = value;
+    return init;
+  };
+
+
+  init.color = function(value) {
+    if (!arguments.length) 
+      return color;
+
+    color = value;
+    return init;
+  };
+
+
+  init.xAxis = function(values) {
+    if (!arguments.length) 
+      return xAxis;
+
+    var x = d3.time.scale().range([0, init.width()]);
+
+    xAxis = d3.svg.axis()
+      .scale(x);
+
+    if (values.orientation) xAxis = xAxis.orient(values.orientation);
+    if (values.ticks)       xAxis = xAxis.ticks(values.ticks);
+      
+    return init;  
+  };
+
+
+  init.yAxis = function(values) {
+    if (!arguments.length) 
+      return yAxis;
+
+    var y = d3.scale.linear().range([init.height(), 0]);
+
+    yAxis = d3.svg.axis()
+      .scale(y);
+
+    if (values.orientation) yAxis = yAxis.orient(values.orientation);
+    if (values.ticks)       yAxis = yAxis.ticks(values.ticks);
+
+    return init;
+  };
+
+
+  init.nestKey = function(value) {
+    if (!arguments.length) 
+      return nestKey;
+
+    nestKey = value;
+    return init;
+  };
+
+  return init;
+}

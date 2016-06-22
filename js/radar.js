@@ -266,13 +266,13 @@ function radarChart() {
 	}
 
 
-  init.container = function(value) {
-    if (!arguments.length) 
-      return container;
+	init.container = function(value) {
+	if (!arguments.length) 
+	  return container;
 
-      container = value;
-      return init;
-  };
+	  container = value;
+	  return init;
+	};
 
 
 	init.margin = function(value) {
