@@ -19,6 +19,62 @@ div.tooltip {
     pointer-events: none;			
 }
 
+#search {
+  border: 0;
+  font-weight: lighter;
+  font-size: 2em;
+  padding: 5px 45px 5px 15px;
+  margin: 0px 0px 0px 35px;
+}
+
+#search:focus {
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+#search-icon {
+  margin-top: 10px;
+}
+
+#search-icon.active {
+  color: black;
+}
+
+.parallax-container img {
+  -webkit-filter: brightness(60%);
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+}
+
+.parallax-container h3 {
+  color: rgba(255,255,255,.9);
+}
+
+.parallax-container .section {
+  width: 100%;
+}
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
 
 /************************ CSS for map *************************/
 #map .background {

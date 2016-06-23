@@ -1,31 +1,51 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <head>
+          <meta charset="utf-8">
+          <meta http-equiv="x-ua-compatible" content="ie=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-        <link type="text/css" rel="stylesheet" href="css/main.css">
-        <title>SICONVIS</title>
-    </head>
-    <body>
+          <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+          <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+          <link type="text/css" rel="stylesheet" href="css/main.css">
+          <title>SICONVIS</title>
+      </head>
+      <body>
 
         <nav class="indigo darken-4" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
-              <ul class="right hide-on-med-and-down">
-                <li><a href="#">Visualização de Dados</a></li>
-              </ul>
-            </div>
+          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="#">Visualização de Dados</a></li>
+            </ul>
+          </div>
         </nav>
-        <div class="section indigo lighten-5" id="index-banner">
+
+
+
+        <div id="index-banner" class="parallax-container" style="filter: brightness(50%);">
+          <div class="section no-pad-bot">
             <div class="container">
-              <h1 class="header indigo-text">SICONVIS</h1> <h5 class="header col s12 light">Uma visualização de como são alocadas as verbas de convênios do Governo Federal</h5>
+              <br><br>
+              <div class="row center">
+                <h3 class="header col s12 light">How does the government is investing on your state?</h3>
+              </div>
+              <div class="row center">
+                  <div class="input-field col s12">
+                    <div class="card white">
+                      <i id="search-icon" class="material-icons prefix">search</i>
+                      <input id="search" type="text" placeholder="eg.: Minas Gerais">
+                    </div>
+                  </div>
+              </div>
+              <br><br>
+
             </div>
+          </div>
+          <div class="parallax"><img src="img/background.jpg" alt="Unsplashed background img 1"></div>
         </div>
 
 
+  
         <div class="container">
           <div class="section">
             <div class="row">
@@ -81,8 +101,7 @@
         <script src="js/vendor/d3.min.js"></script>
         <script src="js/vendor/alasql.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="js/vendor/materialize.min.js"></script>
-        <script src="//d3js.org/topojson.v1.min.js"></script>
+        <script type="text/javascript" src="js/vendor/materialize.js"></script>
 
         
         <script src="js/constants.js"></script>
@@ -93,6 +112,9 @@
 
         
         <script type="text/javascript" charset="utf-8"> 
+          $('.parallax').parallax();
+    
+
           loadData(function() {
               var radarData = [
                   [//iPhone
