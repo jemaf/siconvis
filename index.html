@@ -28,32 +28,29 @@
 
         <div class="container">
           <div class="section">
-          <div class="row">
-              <div class="col s6">
-                <div class="col s12">
-                  
+            <div class="row">
+              <div class="col m6 s12">
+                <div class="card-panel grey lighten-4">
+                  <p>Number of cities attended</p>
+                  <h5>12391</h5>
+                  <div id="stack-total-cities"></div>
                 </div>
-                <div class="col s12">
-                  <h4>Pergunta 2</h4>
-                  <div id="radar"></div>
-                </div>  
-              </div>
-              <div class="col s6">
-                <div class="col s12">
-                  <h4>Pergunta 3</h4>
-                  <div id="stack-global"></div>
+                <div class="card-panel grey lighten-4">
+                  <p>Number of programs approved</p>
+                  <h5>12391</h5>
+                  <div id="stack-total-programs"></div>
                 </div>
-                <div class="col s12">
-                  <h4>Pergunta 4</h4>
-                  <div id="stack-counterpart"></div>
-                </div>
-                <div class="col s12">
-                  <h4>Pergunta 5</h4>
-                  <div id="stack-invest"></div>
-                </div>
+              </div>  
+              <div class="col m6 s12">
+                <div id="radar"></div>
+              </div>  
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div id="stack-investments"></div>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
 
         <footer class="page-footer indigo">
@@ -154,8 +151,8 @@
             radar()
                 .container(RADAR_CONTAINER)
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
-                .width(250)
-                .height(250)
+                .width(200)
+                .height(200)
                 .data(radarData)
                 .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
                 .maxValue(0.5)
@@ -163,14 +160,14 @@
                 .roundStrokes(true)
                 .draw();
 
-            stack1 = stackedChart();
-            stack2 = stackedChart();
-            stack3 = stackedChart();
+            stackInvestments = stackedChart();
+            stackCities = stackedChart();
+            stackPrograms = stackedChart();
 
-            stack1
-                .container(STACK_TOTAL_CONTAINER)
+            stackInvestments
+                .container(STACK_INVESTMENTS_CONTAINER)
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(450)
+                .width(900)
                 .height(250)
                 .data(stackData)
                 .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
@@ -180,28 +177,28 @@
                 .draw();
 
 
-            stack2
-                .container(STACK_COUNTERPART_CONTAINER)
-                .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(450)
-                .height(250)
+            stackCities
+                .container(STACK_TOTAL_CITIES_CONTAINER)
+                .margin({top: 0, right: 0, bottom: 0, left: 0})
+                .width(200)
+                .height(50)
                 .data(stackData)
                 .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
-                .xAxis({ orientation: "bottom", ticks: d3.time.days })
-                .yAxis({ orientation: "left" })
+                .xAxis({ orientation: "bottom", ticks: d3.time.days, tickSize: 0 })
+                .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("key")
                 .draw();
 
 
-            stack3
-                .container(STACK_INVESTMENT_CONTAINER)
-                .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(450)
-                .height(250)
+            stackPrograms
+                .container(STACK_TOTAL_PROGRAMS_CONTAINER)
+                .margin({top: 0, right: 0, bottom: 0, left: 0})
+                .width(200)
+                .height(50)
                 .data(stackData)
                 .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
-                .xAxis({ orientation: "bottom", ticks: d3.time.days })
-                .yAxis({ orientation: "left" })
+                .xAxis({ orientation: "bottom", ticks: d3.time.days, tickSize: 0 })
+                .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("key")
                 .draw();
           });

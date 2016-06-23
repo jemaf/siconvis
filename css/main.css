@@ -58,14 +58,18 @@ div.tooltip {
 
 
 /************************ CSS for stack *************************/
-#stack-global, #stack-counterpart, #stack-invest {
+#stack-investments, #stack-total-cities, #stack-total-programs {
   font: 10px sans-serif;
 }
 
-#stack-global .axis path, #stack-counterpart .axis path, #stack-invest .axis path,
-#stack-global .axis line, #stack-counterpart .axis line, #stack-invest .axis line,
+#stack-investments .axis path, #stack-total-cities .axis path, #stack-total-programs .axis path,
+#stack-investments .axis line, #stack-total-cities .axis line, #stack-total-programs .axis line,
 {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+#stack-total-cities .axis text, #stack-total-programs .axis text {
+  display: none;
 }

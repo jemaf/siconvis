@@ -9,6 +9,6 @@ const MAP_FILE_PATH          = "res/brazil_map.json";
 
 // Containers constants
 const RADAR_CONTAINER                    = "#radar";
-const STACK_TOTAL_CONTAINER              = "#stack-global";
-const STACK_COUNTERPART_CONTAINER        = "#stack-counterpart";
-const STACK_INVESTMENT_CONTAINER         = "#stack-invest";
+const STACK_INVESTMENTS_CONTAINER        = "#stack-investments";
+const STACK_TOTAL_CITIES_CONTAINER       = "#stack-total-cities";
+const STACK_TOTAL_PROGRAMS_CONTAINER     = "#stack-total-programs";

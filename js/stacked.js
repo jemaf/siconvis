@@ -135,8 +135,9 @@ function stackedChart() {
     xAxis = d3.svg.axis()
       .scale(x);
 
-    if (values.orientation) xAxis = xAxis.orient(values.orientation);
-    if (values.ticks)       xAxis = xAxis.ticks(values.ticks);
+    if (values.orientation != undefined) xAxis = xAxis.orient(values.orientation);
+    if (values.ticks != undefined)       xAxis = xAxis.ticks(values.ticks);
+    if (values.tickSize != undefined)    xAxis = xAxis.tickSize(values.tickSize);
       
     return init;  
   };
@@ -151,8 +152,9 @@ function stackedChart() {
     yAxis = d3.svg.axis()
       .scale(y);
 
-    if (values.orientation) yAxis = yAxis.orient(values.orientation);
-    if (values.ticks)       yAxis = yAxis.ticks(values.ticks);
+    if (values.orientation != undefined) yAxis = yAxis.orient(values.orientation);
+    if (values.ticks != undefined)       yAxis = yAxis.ticks(values.ticks);
+    if (values.tickSize != undefined)    yAxis = yAxis.tickSize(values.tickSize);
 
     return init;
   };
