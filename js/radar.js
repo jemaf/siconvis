@@ -124,7 +124,14 @@ function radarChart() {
 			.attr("dy", "0.35em")
 			.attr("x", function(d, i){ return rScale(maxValue * init.labelFactor()) * Math.cos(angleSlice*i - Math.PI/2); })
 			.attr("y", function(d, i){ return rScale(maxValue * init.labelFactor()) * Math.sin(angleSlice*i - Math.PI/2); })
-			.text(function(d){return d})
+			// .text(function(d){return d})
+			.text(function (d) {
+				console.log(d);
+				if(d.length > 5)
+					return d.substring(0,8)+'...';
+				else
+					return d;                       
+			})
 			.call(wrap, init.wrapWidth());
 
 		/////////////////////////////////////////////////////////

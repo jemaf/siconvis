@@ -12,7 +12,7 @@
       </head>
       <body>
 
-        <nav class="indigo darken-4" role="navigation">
+        <nav class="grey darken-4" role="navigation">
           <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
             <ul class="right hide-on-med-and-down">
               <li><a href="#">Visualização de Dados</a></li>
@@ -27,7 +27,7 @@
             <div class="container">
               <br><br>
               <div class="row center">
-                <h3 class="header col s12 light">How does the government is investing on your state?</h3>
+                <h3 class="header col s12 light" style="margin-top: 60px">How is the government investing in your state?</h3>
               </div>
               <div class="row center">
                   <div class="input-field col s12">
@@ -90,7 +90,7 @@
           </div>  
         </div>
 
-        <footer class="page-footer indigo">
+        <footer class="page-footer grey darken-1">
         <div class="container">
           <div class="row">
             <div class="col l8 s12">
@@ -110,7 +110,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container">
-          Made by <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+          Made by <a class="grey-text text-lighten-3" href="http://materializecss.com">Materialize</a>
           </div>
         </div>
         </footer>
@@ -194,12 +194,12 @@
             radar()
                 .container(RADAR_CONTAINER)
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
-                .width(200)
-                .height(200)
+                .width(260)
+                .height(260)
                 .data(radarData.items)
                 .color(d3.scale.ordinal().range(colorRange))
                 .maxValue(0.30)
-                .levels(5)
+                .levels(4)
                 .roundStrokes(true)
                 .draw();
 
