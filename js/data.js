@@ -183,6 +183,16 @@ function getCityData(data, state) {
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
   records.items = alasql(query, [data]);
 
+  var queryTotalCities = "SELECT COUNT(DISTINCT NM_MUNICIPIO_PROPONENTE) AS total_cities FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
+          stateCondition +
+          " GROUP BY UF_PROPONENTE";
+  var resTotal = alasql(queryTotalCities, [data]);
+
+  resTotal.forEach(function(d) {
+    records.total += d.total_cities;
+  });
+
   // remove NaN values from collection
   records.items = records.items.filter(function(innerElement) {
     return !isNaN(innerElement.ano);
@@ -192,8 +202,6 @@ function getCityData(data, state) {
   records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.cities;
-
-    records.total += d.y;
   });
 
   records.items.sort(function(a, b) {
