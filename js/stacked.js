@@ -19,7 +19,6 @@ function stackedChart() {
 
 
   init.draw = function() {
-
     var x = d3.time.scale()
         .range([0, init.width()]);
 

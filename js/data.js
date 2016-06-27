@@ -2,7 +2,6 @@
 	File that prepares the necessary data to be used by visualizations
 */
 
-
 /**
  *  Function that load the data from database file
  *
@@ -57,63 +56,17 @@ function loadData(callback) {
  */
 function handleData(data) {
   
-  var res = {};
-  var query = "SELECT UF_PROPONENTE AS uf, MES_ASSINATURA_CONVENIO AS mes, \
+  var query = "SELECT UF_PROPONENTE AS uf, \
           ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_CONTRAPARTIDA_TOTAL) AS total FROM ? \
-          GROUP BY UF_PROPONENTE, MES_ASSINATURA_CONVENIO, ANO_ASSINATURA_CONVENIO\
-          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO, MES_ASSINATURA_CONVENIO";
-  res.records = alasql(query, [data]);
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
+          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+  var records = alasql(query, [data]);
 
-  query = "SELECT uf, ARRAY({mes: mes, ano: ano, total: total}) AS items FROM ? GROUP BY uf ORDER BY ano, mes";
-  res.records = alasql(query, [res.records]);
-
-  res.records.forEach(function(element) {
-    // remove NaN values from collection
-    element.items = element.items.filter(function(innerElement) {
-      return !isNaN(innerElement.ano) && !isNaN(innerElement.mes);
-    });
-
-    var totalAno = 0;
-    element.items.forEach(function(param){
-      totalAno += param.total;
-    });
-
-    //convert date to JS format
-    element.items = element.items.map(function(innerElement) {
-      var dateFormat = d3.time.format("%Y %m");
-      return {date: dateFormat.parse(innerElement.ano + " " + innerElement.mes), value: innerElement.total,
-          yearValue: totalAno};
-    });
-
-    //sort each item array
-    element.items.sort(function(a, b) {
-          return a.date.getTime() - b.date.getTime();
-        });
-
-    //get first and last date
-    if (!res.firstDate || res.firstDate > element.items[0].date.getTime())
-      res.firstDate = element.items[0].date;
-
-    if (!res.lastDate || res.lastDate.getTime() < element.items[element.items.length - 1].date.getTime())
-      res.lastDate = element.items[element.items.length - 1].date;
+  // remove NaN values from collection
+  records = records.filter(function(innerElement) {
+    return !isNaN(innerElement.ano);
   });
 
-  // normalize date to include every date between first and last one
-  res.records.forEach(function(element) {
-    
-    var totalAno = 0;
-    element.items.forEach(function(param){
-      totalAno += param.value;
-    });
-
-    var currentDate = new Date(res.firstDate.getTime());
-    for (var i = 0; currentDate.getTime() <= res.lastDate.getTime(); i++) {
-      if (!element.items[i] || element.items[i].date.getTime() != currentDate.getTime()) {
-        element.items.splice(i, 0, {date: new Date(currentDate.getTime()), value: 0, yearValue: totalAno});
-      }
-      currentDate.setMonth(currentDate.getMonth() + 1);
-    }
-  });
-
-  return res;
+  return records;
 };

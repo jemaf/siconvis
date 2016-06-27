@@ -113,9 +113,9 @@
         
         <script type="text/javascript" charset="utf-8"> 
           $('.parallax').parallax();
-    
 
-          loadData(function() {
+
+          loadData(function(err, data) {
               var radarData = [
                   [//iPhone
                   {axis:"Battery Life",value:0.22},
@@ -147,25 +147,18 @@
                   ]
                 ];
 
-              var stackData = [
-                  {key: "Group1", value: 37, date: "04/23/12"},
-                  {key: "Group2", value: 12, date: "04/23/12"},
-                  {key: "Group3", value: 46, date: "04/23/12"},
-                  {key: "Group1", value: 32, date: "04/24/12"},
-                  {key: "Group2", value: 19, date: "04/24/12"},
-                  {key: "Group3", value: 42, date: "04/24/12"},
-                  {key: "Group1", value: 45, date: "04/25/12"},
-                  {key: "Group2", value: 16, date: "04/25/12"},
-                  {key: "Group3", value: 44, date: "04/25/12"},
-                  {key: "Group1", value: 24, date: "04/26/12"},
-                  {key: "Group2", value: 52, date: "04/26/12"},
-                  {key: "Group3", value: 64, date: "04/26/12"}
-                ];
-              var format = d3.time.format("%m/%d/%y");
+              colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
 
-              stackData.forEach(function(d) {
-                d.x = format.parse(d.date);
-                d.y = +d.value;
+              var stackedData = handleData(data);
+
+              var format = d3.time.format("%Y");
+              stackedData.forEach(function(d) {
+                d.x = format.parse(d.ano + "");
+                d.y = +d.total;
+              });
+
+              stackedData.sort(function(a, b) {
+                return a.x - b.x;
               });
 
             radar = radarChart();
@@ -176,7 +169,7 @@
                 .width(200)
                 .height(200)
                 .data(radarData)
-                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
+                .color(d3.scale.ordinal().range(colorRange))
                 .maxValue(0.5)
                 .levels(5)
                 .roundStrokes(true)
@@ -191,11 +184,11 @@
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
                 .width(900)
                 .height(250)
-                .data(stackData)
-                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
-                .xAxis({ orientation: "bottom", ticks: d3.time.days })
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(colorRange))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
-                .nestKey("key")
+                .nestKey("uf")
                 .draw();
 
 
@@ -204,11 +197,11 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackData)
-                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
-                .xAxis({ orientation: "bottom", ticks: d3.time.days, tickSize: 0 })
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(colorRange))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
-                .nestKey("key")
+                .nestKey("uf")
                 .draw();
 
 
@@ -217,11 +210,11 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackData)
-                .color(d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]))
-                .xAxis({ orientation: "bottom", ticks: d3.time.days, tickSize: 0 })
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(colorRange))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
-                .nestKey("key")
+                .nestKey("uf")
                 .draw();
           });
         </script>
