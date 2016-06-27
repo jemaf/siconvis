@@ -81,79 +81,121 @@ function handleData(data) {
 return records;
 };
 
-function getCityData(data) {
-  
+function getCityData(data, state) {
+  var records = {items: [], total: 0};
+
+  var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
   var query = "SELECT UF_PROPONENTE AS uf, \
-          ANO_ASSINATURA_CONVENIO AS ano, COUNT(NM_MUNICIPIO_PROPONENTE) AS cities FROM ? \
-          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
-          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT NM_MUNICIPIO_PROPONENTE) AS cities FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
+          stateCondition +
+          " GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
-  var records = alasql(query, [data]);
+  records.items = alasql(query, [data]);
 
   // remove NaN values from collection
-  records = records.filter(function(innerElement) {
+  records.items = records.items.filter(function(innerElement) {
     return !isNaN(innerElement.ano);
   });
 
   var format = d3.time.format("%Y");
-  records.forEach(function(d) {
+  records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.cities;
+
+    records.total += d.y;
   });
 
-  records.sort(function(a, b) {
+  records.items.sort(function(a, b) {
     return a.x - b.x;
   });
 
   return records;
 };
 
-function getProgramData(data) {
+function getProgramData(data, state) {
+  var records = {items: [], total: 0};
   
+  var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
   var query = "SELECT UF_PROPONENTE AS uf, \
-          ANO_ASSINATURA_CONVENIO AS ano, COUNT(CD_PROGRAMA) AS programs FROM ? \
-          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
-          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT ID_CONVENIO) AS programs FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
+          stateCondition +
+          " GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
-  var records = alasql(query, [data]);
+  records.items = alasql(query, [data]);
 
   // remove NaN values from collection
-  records = records.filter(function(innerElement) {
+  records.items = records.items.filter(function(innerElement) {
     return !isNaN(innerElement.ano);
   });
 
+  records.total = 0;
   var format = d3.time.format("%Y");
-  records.forEach(function(d) {
+  records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.programs;
+
+    records.total += d.y;
   });
 
-  records.sort(function(a, b) {
+  records.items.sort(function(a, b) {
     return a.x - b.x;
   });
 
   return records;
 };
 
-function getRadarData(data, state) {
-  
-  var queryState = "SELECT TOP(8) NM_ORGAO_CONCEDENTE AS axis,\
-          SUM(VL_GLOBAL) AS total FROM ?\
-          WHERE UF_PROPONENTE == state\
-          GROUP BY NM_ORGAO_CONCEDENTE \
-          ORDER BY total DESC";
-  var recordsState = alasql(queryState, [data]);
 
-  var queryRadar = "SELECT TOP(8) NM_ORGAO_CONCEDENTE AS axis,\
+function getRadarData(data, state) {
+  var records = {items: [], total: 0};
+
+  // query for current selection
+  var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
+  var queryValues = "SELECT NM_ORGAO_CONCEDENTE AS axis,\
           SUM(VL_GLOBAL) AS total FROM ?\
-          GROUP BY NM_ORGAO_CONCEDENTE \
-          ORDER BY total DESC";
-  var recordsRadar = alasql(queryRadar, [data]);
-  
-  recordsRadar.forEach(function(d){
-      d.value = d.total;
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
+          stateCondition +
+          " GROUP BY NM_ORGAO_CONCEDENTE \
+          ORDER BY total DESC \
+          LIMIT 8";
+  var temp = alasql(queryValues, [data]);
+
+  var total = 0;
+  var orgaos = [];
+  temp.forEach(function(v) {
+    total += v.total;
+    orgaos.push("'" + v.axis + "'");
   });
-  
-  return [recordsRadar];
+  temp.forEach(function(v) {
+    v.value = v.total / total;
+  });
+  records.items.push(temp);
+
+  // query for each region
+  var regionCondition = "NM_ORGAO_CONCEDENTE = " + orgaos.join(" OR NM_ORGAO_CONCEDENTE = ");
+  ["Norte", "Nordeste", "Sudeste", "Sul", "Centro-Oeste"].forEach(function(region) {
+    var queryRegion = "SELECT NM_ORGAO_CONCEDENTE AS axis,\
+            SUM(VL_GLOBAL) AS total FROM ?\
+            WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016 AND \
+            TX_REGIAO_PROPONENTE = '" + region + "' AND (" +
+            regionCondition + 
+            ") GROUP BY NM_ORGAO_CONCEDENTE \
+            ORDER BY total DESC";
+    temp = alasql(queryRegion, [data]);
+
+    var total = 0;
+    temp.forEach(function(v) {
+      total += v.total;
+    });
+    temp.forEach(function(v) {
+      v.value = v.total / total;
+    });
+
+    records.items.push(temp);
+  });
+
+
+  return records;
 };
 

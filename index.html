@@ -52,12 +52,12 @@
               <div class="col m6 s12">
                 <div class="card-panel grey lighten-4">
                   <p>Number of cities attended</p>
-                  <h5>12391</h5>
+                  <h5 id="total-cities-label">12391</h5>
                   <div id="stack-total-cities"></div>
                 </div>
                 <div class="card-panel grey lighten-4">
-                  <p>Number of programs approved</p>
-                  <h5>12391</h5>
+                  <p>Number of agreements approved</p>
+                  <h5 id="total-programs-label">12391</h5>
                   <div id="stack-total-programs"></div>
                 </div>
               </div>  
@@ -116,48 +116,16 @@
 
 
           loadData(function(err, data) {
-              var radarData = [
-                  [//iPhone
-                  {axis:"Battery Life",value:0.22},
-                  {axis:"Brand",value:0.28},
-                  {axis:"Contract Cost",value:0.29},
-                  {axis:"Design And Quality",value:0.17},
-                  {axis:"Have Internet Connectivity",value:0.22},
-                  {axis:"Large Screen",value:0.02},
-                  {axis:"Price Of Device",value:0.21},
-                  {axis:"To Be A Smartphone",value:0.50}      
-                  ],[//Samsung
-                  {axis:"Battery Life",value:0.27},
-                  {axis:"Brand",value:0.16},
-                  {axis:"Contract Cost",value:0.35},
-                  {axis:"Design And Quality",value:0.13},
-                  {axis:"Have Internet Connectivity",value:0.20},
-                  {axis:"Large Screen",value:0.13},
-                  {axis:"Price Of Device",value:0.35},
-                  {axis:"To Be A Smartphone",value:0.38}
-                  ],[//Nokia Smartphone
-                  {axis:"Battery Life",value:0.26},
-                  {axis:"Brand",value:0.10},
-                  {axis:"Contract Cost",value:0.30},
-                  {axis:"Design And Quality",value:0.14},
-                  {axis:"Have Internet Connectivity",value:0.22},
-                  {axis:"Large Screen",value:0.04},
-                  {axis:"Price Of Device",value:0.41},
-                  {axis:"To Be A Smartphone",value:0.30}
-                  ]
-                ];
-
-              colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
+            colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
               
-              var radarTest = getRadarData(data, "PB");
-              console.log(radarTest);
-
-              var stackedData = handleData(data);
-
-              var stackedCitiesData = getCityData(data);
+            var radarData = getRadarData(data);
+            var stackedData = handleData(data);
+            var stackedCitiesData = getCityData(data, "MG");
+            var stackedProgramData = getProgramData(data, "MG");
               
-              var stackedProgramData = getProgramData(data);
-              
+            $(TOTAL_CITIES_TEXT).text(stackedCitiesData.total);
+            $(TOTAL_PROGRAMS_TEXT).text(stackedProgramData.total);
+
             radar = radarChart();
 
             radar()
@@ -165,9 +133,9 @@
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
                 .width(200)
                 .height(200)
-                .data(radarTest)
+                .data(radarData.items)
                 .color(d3.scale.ordinal().range(colorRange))
-                .maxValue(0.5)
+                .maxValue(0.45)
                 .levels(5)
                 .roundStrokes(true)
                 .draw();
@@ -194,7 +162,7 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackedCitiesData)
+                .data(stackedCitiesData.items)
                 .color(d3.scale.ordinal().range(colorRange))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
@@ -207,7 +175,7 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackedProgramData)
+                .data(stackedProgramData.items)
                 .color(d3.scale.ordinal().range(colorRange))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })

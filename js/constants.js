@@ -12,3 +12,7 @@ const RADAR_CONTAINER                    = "#radar";
 const STACK_INVESTMENTS_CONTAINER        = "#stack-investments";
 const STACK_TOTAL_CITIES_CONTAINER       = "#stack-total-cities";
 const STACK_TOTAL_PROGRAMS_CONTAINER     = "#stack-total-programs";
+
+// Text constants
+const TOTAL_CITIES_TEXT 				 = "#total-cities-label";
+const TOTAL_PROGRAMS_TEXT 				 = "#total-programs-label";
