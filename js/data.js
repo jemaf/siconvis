@@ -22,6 +22,7 @@ function loadData(callback) {
   		row.CD_IDENTIF_PROPONENTE 		= 	parseInt(row.CD_IDENTIF_PROPONENTE);
   		row.CD_ORGAO_CONCEDENTE 		= 	parseInt(row.CD_ORGAO_CONCEDENTE);
   		row.CD_ORGAO_SUPERIOR 			= 	parseInt(row.CD_ORGAO_SUPERIOR);
+      row.CD_PROGRAMA            = parseInt(row.CD_PROGRAMA);
   		row.ID_CONVENIO 				= 	parseInt(row.ID_CONVENIO);
   		row.ID_PROP 					= 	parseInt(row.ID_PROP);
   		row.ID_PROP_PROGRAMA 			= 	parseInt(row.ID_PROP_PROGRAMA);
@@ -38,7 +39,7 @@ function loadData(callback) {
   		row.ANO_ASSINATURA_CONVENIO 	= 	parseInt(row.ANO_ASSINATURA_CONVENIO);
   		row.MES_PUBLICACAO_CONVENIO 	= 	parseInt(row.MES_PUBLICACAO_CONVENIO);
   		row.ANO_PUBLICACAO_CONVENIO 	= 	parseInt(row.ANO_PUBLICACAO_CONVENIO);
-  	
+
   	});	
 
     // invokes the callback to manipulate the resulting data
@@ -57,7 +58,41 @@ function loadData(callback) {
 function handleData(data) {
   
   var query = "SELECT UF_PROPONENTE AS uf, \
-          ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_CONTRAPARTIDA_TOTAL) AS total FROM ? \
+          ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_GLOBAL) AS total FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
+          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+  var records = alasql(query, [data]);
+
+  // remove NaN values from collection
+  records = records.filter(function(innerElement) {
+    return !isNaN(innerElement.ano);
+  });
+
+  return records;
+};
+
+function getCityData(data) {
+  
+  var query = "SELECT UF_PROPONENTE AS uf, \
+          ANO_ASSINATURA_CONVENIO AS ano, COUNT(NM_MUNICIPIO_PROPONENTE) AS cities FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
+          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+  var records = alasql(query, [data]);
+
+  // remove NaN values from collection
+  records = records.filter(function(innerElement) {
+    return !isNaN(innerElement.ano);
+  });
+
+  return records;
+};
+
+function getProgramData(data) {
+  
+  var query = "SELECT UF_PROPONENTE AS uf, \
+          ANO_ASSINATURA_CONVENIO AS ano, COUNT(CD_PROGRAMA) AS programs FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
           GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";

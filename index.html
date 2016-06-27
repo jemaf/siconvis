@@ -161,6 +161,26 @@
                 return a.x - b.x;
               });
 
+              var stackedCitiesData = getCityData(data);
+              stackedCitiesData.forEach(function(d) {
+                d.x = format.parse(d.ano + "");
+                d.y = +d.cities;
+              });
+
+              stackedCitiesData.sort(function(a, b) {
+                return a.x - b.x;
+              });
+
+              var stackedProgramData = getProgramData(data);
+              stackedProgramData.forEach(function(d) {
+                d.x = format.parse(d.ano + "");
+                d.y = +d.programs;
+              });
+
+              stackedProgramData.sort(function(a, b) {
+                return a.x - b.x;
+              });
+              console.log(stackedProgramData)
             radar = radarChart();
 
             radar()
@@ -197,7 +217,7 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackedData)
+                .data(stackedCitiesData)
                 .color(d3.scale.ordinal().range(colorRange))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
@@ -210,7 +230,7 @@
                 .margin({top: 0, right: 0, bottom: 0, left: 0})
                 .width(200)
                 .height(50)
-                .data(stackedData)
+                .data(stackedProgramData)
                 .color(d3.scale.ordinal().range(colorRange))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
