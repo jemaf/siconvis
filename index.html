@@ -44,15 +44,13 @@
           <div class="parallax"><img src="img/background.jpg" alt="Unsplashed background img 1"></div>
         </div>
 
-
-  
         <div class="container">
           <div class="section">
             <div class="row">
               <div class="col m4 s12">
                 <div class="card-panel">  
                   <img id="state-flag" class="responsive-img" src="" alt="">
-                  <h5 id="state-name"></h5>
+                  <h5 class="state-name"></h5>
                   <span><b>Capital: </b><span id="state-capital"></span></span><br>
                   <span><b>Region: </b><span id="state-region"></span></span><br>
                   <span><b>Population: </b><span id="state-population"></span></span><br>
@@ -71,23 +69,43 @@
                 </div>
               </div>  
               <div class="col m4 s12">
+              <h5>How <span class="state-name"></span> is dividing its money between the departaments?</h5>
                 <div id="radar"></div>
               </div>  
             </div>
+          </div>  
+        </div>
+
+        <div class="parallax-container valign-wrapper">
+          <div class="section no-pad-bot">
+            <div class="container">
+              <div class="row center">
+                <h3 class="header col s12 light">How these investments evolve over time?</h3>
+              </div>
+            </div>
+          </div>
+          <div class="parallax"><img src="img/background.jpg" alt="Unsplashed background img 2"></div>
+        </div>
+
+        <div class="container">
+          <div class="section">
             <div class="row">
               <div class="col s12">
+                <h5>Regarding the total amount invested</h5>
                 <div id="stack-investments-total"></div>
               </div>
             </div>
             <div class="row">
               <div class="col m6 s12">
+                <h5>Regarding state's counterpart</h5>
                 <div id="stack-investments-counterpart"></div>
               </div>
               <div class="col m6 s12">
+                <h5>Regarding governement investment</h5>
                 <div id="stack-investments-state"></div>
               </div>
             </div>
-          </div>  
+          </div>
         </div>
 
         <footer class="page-footer grey darken-1">
@@ -194,8 +212,8 @@
             radar()
                 .container(RADAR_CONTAINER)
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
-                .width(260)
-                .height(260)
+                .width(230)
+                .height(230)
                 .data(radarData.items)
                 .color(d3.scale.ordinal().range(colorRange))
                 .maxValue(0.30)

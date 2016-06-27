@@ -21,7 +21,7 @@ const TOTAL_PROGRAMS_TEXT 				 = "#total-programs-label";
 
 //state's details text constants
 const SEARCH_BUTTON						 = "#search";
-const STATE_NAME_TEXT 					 = "#state-name";
+const STATE_NAME_TEXT 					 = ".state-name";
 const STATE_CAPITAL_TEXT 				 = "#state-capital";
 const STATE_REGION_TEXT 				 = "#state-region";
 const STATE_POPULATION_TEXT 			 = "#state-population";
