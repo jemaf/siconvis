@@ -186,7 +186,6 @@ function getRadarData(data, state) {
             regionCondition + 
             ") GROUP BY NM_ORGAO_CONCEDENTE \
             ORDER BY total DESC";
-            console.log(queryRegion);
     temp = alasql(queryRegion, [data]);
 
     var total = 0;

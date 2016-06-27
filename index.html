@@ -49,19 +49,28 @@
         <div class="container">
           <div class="section">
             <div class="row">
-              <div class="col m4 s12 offset-m2">
+              <div class="col m4 s12">
+                <div class="card-panel">  
+                  <img id="state-flag" class="responsive-img" src="" alt="">
+                  <h5 id="state-name"></h5>
+                  <span><b>Capital: </b><span id="state-capital"></span></span><br>
+                  <span><b>Region: </b><span id="state-region"></span></span><br>
+                  <span><b>Population: </b><span id="state-population"></span></span><br>
+                </div>
+              </div>
+              <div class="col m4 s12">
                 <div class="card-panel grey lighten-4">
                   <p>Number of cities attended</p>
-                  <h5 id="total-cities-label">12391</h5>
+                  <h5 id="total-cities-label"></h5>
                   <div id="stack-total-cities"></div>
                 </div>
                 <div class="card-panel grey lighten-4">
                   <p>Number of agreements approved</p>
-                  <h5 id="total-programs-label">12391</h5>
+                  <h5 id="total-programs-label"></h5>
                   <div id="stack-total-programs"></div>
                 </div>
               </div>  
-              <div class="col m4 s12" style="height: 120px;">
+              <div class="col m4 s12">
                 <div id="radar"></div>
               </div>  
             </div>
@@ -122,9 +131,55 @@
         <script type="text/javascript" charset="utf-8"> 
           $('.parallax').parallax();
 
+          function loadData2(data, stateId) {
+            if (stateId == undefined || stateId == "" || stateId == "BR") {
+              var filteredRadarData = getRadarData(data);
+              var filteredStackedData = handleData(data);
+              var filteredStackedCitiesData = getCityData(data);
+              var filteredStackedProgramData = getProgramData(data);
 
+              stateId = "BR";
+            } 
+
+            var state = STATES_DATA[stateId];
+            if (state) {
+              if (stateId != "BR") {
+                var filteredRadarData = getRadarData(data, stateId);
+                var filteredStackedData = handleData(data);
+                var filteredStackedCitiesData = getCityData(data, stateId);
+                var filteredStackedProgramData = getProgramData(data, stateId);
+              }
+
+              $(STATE_NAME_TEXT).text(state.name);
+              $(STATE_CAPITAL_TEXT).text(state.capital);
+              $(STATE_REGION_TEXT).text(state.region);
+              $(STATE_POPULATION_TEXT).text(state.population);
+              $(STATE_FLAG).attr("src", "img/" + stateId + ".png");  
+              $(TOTAL_CITIES_TEXT).text(filteredStackedCitiesData.total);
+              $(TOTAL_PROGRAMS_TEXT).text(filteredStackedProgramData.total);
+
+              if (stateId != "BR")
+                $(STATE_REGION_TEXT).parent().show();
+              else 
+                $(STATE_REGION_TEXT).parent().hide();
+            }
+          }
+
+        
           loadData(function(err, data) {
+        
             colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
+
+            $(SEARCH_BUTTON).bind("enterKey",function(e){
+              loadData2(data, e.currentTarget.value);
+            });
+
+            $(SEARCH_BUTTON).keyup(function(e){
+              if(e.keyCode == 13)
+                $(this).trigger("enterKey");
+            });
+
+            loadData2(data);
               
             var radarData = getRadarData(data);
             var stackedData = handleData(data);
