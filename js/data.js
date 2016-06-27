@@ -105,3 +105,22 @@ function getProgramData(data) {
 
   return records;
 };
+
+function getRadarData(data, state) {
+  
+  var queryState = "SELECT TOP(8) NM_ORGAO_CONCEDENTE AS axis,\
+          SUM(VL_GLOBAL) AS total FROM ?\
+          WHERE UF_PROPONENTE == state\
+          GROUP BY NM_ORGAO_CONCEDENTE \
+          ORDER BY total DESC";
+  var recordsState = alasql(queryState, [data]);
+
+  var queryRadar = "SELECT TOP(8) NM_ORGAO_CONCEDENTE AS axis,\
+          SUM(VL_GLOBAL) AS total FROM ?\
+          GROUP BY NM_ORGAO_CONCEDENTE \
+          ORDER BY total DESC";
+  var recordsRadar = alasql(queryRadar, [data]);
+
+  return [recordsRadar];
+};
+

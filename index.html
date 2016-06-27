@@ -148,6 +148,15 @@
                 ];
 
               colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
+              
+              var radarTest = getRadarData(data, "PB");
+              
+              radarTest.forEach(function(d){
+                d.forEach(function(inner){
+                  inner.value = inner.total;
+                })
+              });
+              console.log(radarTest);
 
               var stackedData = handleData(data);
 
@@ -188,7 +197,7 @@
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
                 .width(200)
                 .height(200)
-                .data(radarData)
+                .data(radarTest)
                 .color(d3.scale.ordinal().range(colorRange))
                 .maxValue(0.5)
                 .levels(5)
