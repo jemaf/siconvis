@@ -33,7 +33,7 @@
                   <div class="input-field col s12">
                     <div class="card white">
                       <i id="search-icon" class="material-icons prefix">search</i>
-                      <input id="search" type="text" placeholder="eg.: Minas Gerais">
+                      <input id="search" type="text" placeholder="eg.: MG, RS, SP, RR, RO, etc...">
                     </div>
                   </div>
               </div>
@@ -49,7 +49,7 @@
         <div class="container">
           <div class="section">
             <div class="row">
-              <div class="col m6 s12">
+              <div class="col m4 s12 offset-m2">
                 <div class="card-panel grey lighten-4">
                   <p>Number of cities attended</p>
                   <h5 id="total-cities-label">12391</h5>
@@ -61,13 +61,21 @@
                   <div id="stack-total-programs"></div>
                 </div>
               </div>  
-              <div class="col m6 s12">
+              <div class="col m4 s12" style="height: 120px;">
                 <div id="radar"></div>
               </div>  
             </div>
             <div class="row">
               <div class="col s12">
-                <div id="stack-investments"></div>
+                <div id="stack-investments-total"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col m6 s12">
+                <div id="stack-investments-counterpart"></div>
+              </div>
+              <div class="col m6 s12">
+                <div id="stack-investments-state"></div>
               </div>
             </div>
           </div>  
@@ -120,8 +128,8 @@
               
             var radarData = getRadarData(data);
             var stackedData = handleData(data);
-            var stackedCitiesData = getCityData(data, "MG");
-            var stackedProgramData = getProgramData(data, "MG");
+            var stackedCitiesData = getCityData(data);
+            var stackedProgramData = getProgramData(data);
               
             $(TOTAL_CITIES_TEXT).text(stackedCitiesData.total);
             $(TOTAL_PROGRAMS_TEXT).text(stackedProgramData.total);
@@ -135,19 +143,21 @@
                 .height(200)
                 .data(radarData.items)
                 .color(d3.scale.ordinal().range(colorRange))
-                .maxValue(0.45)
+                .maxValue(0.30)
                 .levels(5)
                 .roundStrokes(true)
                 .draw();
 
-            stackInvestments = stackedChart();
+            stackInvestmentsTotal = stackedChart();
+            stackInvestmentsCounterpart = stackedChart();
+            stackInvestmentsState = stackedChart();
             stackCities = stackedChart();
             stackPrograms = stackedChart();
 
-            stackInvestments
-                .container(STACK_INVESTMENTS_CONTAINER)
+            stackInvestmentsTotal
+                .container(STACK_INVESTMENTS_TOTAL_CONTAINER)
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(900)
+                .width(960)
                 .height(250)
                 .data(stackedData)
                 .color(d3.scale.ordinal().range(colorRange))
@@ -156,6 +166,29 @@
                 .nestKey("uf")
                 .draw();
 
+            stackInvestmentsCounterpart
+                .container(STACK_INVESTMENTS_COUNTERPART_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(450)
+                .height(200)
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(colorRange))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
+                .yAxis({ orientation: "left" })
+                .nestKey("uf")
+                .draw();
+
+            stackInvestmentsState
+                .container(STACK_INVESTMENTS_STATE_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(450)
+                .height(200)
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(colorRange))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
+                .yAxis({ orientation: "left" })
+                .nestKey("uf")
+                .draw();
 
             stackCities
                 .container(STACK_TOTAL_CITIES_CONTAINER)

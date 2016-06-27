@@ -172,16 +172,21 @@ function getRadarData(data, state) {
   });
   records.items.push(temp);
 
-  // query for each region
+  var regions = state ? [STATES_DATA[state].region, "Brasil"] : ["Norte", "Nordeste", "Sul", "Sudeste"];
+
+  // query for each region in case a state is selected
   var regionCondition = "NM_ORGAO_CONCEDENTE = " + orgaos.join(" OR NM_ORGAO_CONCEDENTE = ");
-  ["Norte", "Nordeste", "Sudeste", "Sul", "Centro-Oeste"].forEach(function(region) {
+  regions.forEach(function(region) {
+
+    var region = region != "Brasil" ? " AND TX_REGIAO_PROPONENTE = '" + region + "'" : "";
     var queryRegion = "SELECT NM_ORGAO_CONCEDENTE AS axis,\
             SUM(VL_GLOBAL) AS total FROM ?\
-            WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016 AND \
-            TX_REGIAO_PROPONENTE = '" + region + "' AND (" +
+            WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016 \
+             " + region + " AND (" +
             regionCondition + 
             ") GROUP BY NM_ORGAO_CONCEDENTE \
             ORDER BY total DESC";
+            console.log(queryRegion);
     temp = alasql(queryRegion, [data]);
 
     var total = 0;
@@ -192,7 +197,7 @@ function getRadarData(data, state) {
       v.value = v.total / total;
     });
 
-    records.items.push(temp);
+    records.items.splice(0, 0, temp);
   });
 
 
