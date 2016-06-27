@@ -60,3 +60,9 @@ var STATES_DATA = {
     "SE": {name: "Sergipe"             ,  capital: "Aracaju"         , region: "Nordeste"},
     "TO": {name: "Tocantins"           ,  capital: "Palmas"          , region: "Norte"}
 };
+
+var COLORS = ["#FDB462", "#FDB462", "#FDB462", "#FDB462", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", 
+    "#8DA0CB", "#8DA0CB", "#66C2A5", "#66C2A5", "#66C2A5", "#66C2A5", "#66C2A5", "#66C2A5", "#66C2A5", "#E78AC3", "#E78AC3", "#E78AC3", 
+    "#E78AC3", "#B3B3B3", "#B3B3B3", "#B3B3B3"];
+
+var COLORS_REGION = ["#FDB462", "#8DA0CB", "#66C2A5", "#E78AC3", "#B3B3B3"];

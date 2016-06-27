@@ -167,8 +167,6 @@
 
         
           loadData(function(err, data) {
-        
-            colorRange = ["#015eff", "#0cc402", "#aea7a5", "#d21170", "#d99f07", "#11a5fe", "#037e43", "#ba4455", "#d10aff", "#9354a6", "#7b6d2b", "#08bbbb", "#95b42d", "#b54e04", "#ee74ff", "#2d7593", "#e19772", "#fa7fbe", "#aea0db", "#905e76", "#92b27a", "#03c262", "#878aff", "#4a7662", "#07b6e5", "#fe8504", "#9340e1"];
 
             $(SEARCH_BUTTON).bind("enterKey",function(e){
               loadData2(data, e.currentTarget.value);
@@ -185,6 +183,8 @@
             var stackedData = handleData(data);
             var stackedCitiesData = getCityData(data);
             var stackedProgramData = getProgramData(data);
+            var stackInvestmentStateData = getInvestmentStateData(data);
+            var stackInvestmentsCounterpartData = getInvestmentsCounterpartData(data);
               
             $(TOTAL_CITIES_TEXT).text(stackedCitiesData.total);
             $(TOTAL_PROGRAMS_TEXT).text(stackedProgramData.total);
@@ -197,7 +197,7 @@
                 .width(200)
                 .height(200)
                 .data(radarData.items)
-                .color(d3.scale.ordinal().range(colorRange))
+                .color(d3.scale.ordinal().range(COLORS_REGION))
                 .maxValue(0.30)
                 .levels(5)
                 .roundStrokes(true)
@@ -215,7 +215,7 @@
                 .width(960)
                 .height(250)
                 .data(stackedData)
-                .color(d3.scale.ordinal().range(colorRange))
+                .color(d3.scale.ordinal().range(COLORS))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
@@ -226,8 +226,8 @@
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
                 .width(450)
                 .height(200)
-                .data(stackedData)
-                .color(d3.scale.ordinal().range(colorRange))
+                .data(stackInvestmentsCounterpartData)
+                .color(d3.scale.ordinal().range(COLORS))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
@@ -238,8 +238,8 @@
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
                 .width(450)
                 .height(200)
-                .data(stackedData)
-                .color(d3.scale.ordinal().range(colorRange))
+                .data(stackInvestmentStateData)
+                .color(d3.scale.ordinal().range(COLORS))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
@@ -251,7 +251,7 @@
                 .width(200)
                 .height(50)
                 .data(stackedCitiesData.items)
-                .color(d3.scale.ordinal().range(colorRange))
+                .color(d3.scale.ordinal().range(COLORS))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("uf")
@@ -264,7 +264,7 @@
                 .width(200)
                 .height(50)
                 .data(stackedProgramData.items)
-                .color(d3.scale.ordinal().range(colorRange))
+                .color(d3.scale.ordinal().range(COLORS))
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("uf")
