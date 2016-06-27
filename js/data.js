@@ -78,6 +78,96 @@ function handleData(data) {
   records.sort(function(a, b) {
     return a.x - b.x;
   });
+
+  records.forEach(function(e){
+    e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.sort(function(a, b) {
+    return a.region.localeCompare(b.region);
+  });
+return records;
+};
+
+/**
+ *  function that filter data for streamgraph
+ *  @param data to be filtered
+ *
+ *  @return data filtered by UF_PROPONENTE, ANO_ASSINATURA_CONVENIO and MES_ASSINATURA_CONVENIO
+ */
+function getInvestmentStateData(data) {
+  
+  var query = "SELECT UF_PROPONENTE AS uf, \
+          ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_REPASSE) AS total FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
+          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+  var records = alasql(query, [data]);
+
+  // remove NaN values from collection
+  records = records.filter(function(innerElement) {
+    return !isNaN(innerElement.ano);
+  });
+
+  var format = d3.time.format("%Y");
+  records.forEach(function(d) {
+    d.x = format.parse(d.ano + "");
+    d.y = +d.total;
+  });
+
+  records.sort(function(a, b) {
+    return a.x - b.x;
+  });
+
+  records.forEach(function(e){
+    e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.sort(function(a, b) {
+    return a.region.localeCompare(b.region);
+  });
+
+return records;
+};
+
+/**
+ *  function that filter data for streamgraph
+ *  @param data to be filtered
+ *
+ *  @return data filtered by UF_PROPONENTE, ANO_ASSINATURA_CONVENIO and MES_ASSINATURA_CONVENIO
+ */
+function getInvestmentsCounterpartData(data) {
+  
+  var query = "SELECT UF_PROPONENTE AS uf, \
+          ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_CONTRAPARTIDA_TOTAL) AS total FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
+          GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
+          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+  var records = alasql(query, [data]);
+
+  // remove NaN values from collection
+  records = records.filter(function(innerElement) {
+    return !isNaN(innerElement.ano);
+  });
+
+  var format = d3.time.format("%Y");
+  records.forEach(function(d) {
+    d.x = format.parse(d.ano + "");
+    d.y = +d.total;
+  });
+
+  records.sort(function(a, b) {
+    return a.x - b.x;
+  });
+
+  records.forEach(function(e){
+    e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.sort(function(a, b) {
+    return a.region.localeCompare(b.region);
+  });
+
 return records;
 };
 
@@ -108,6 +198,14 @@ function getCityData(data, state) {
 
   records.items.sort(function(a, b) {
     return a.x - b.x;
+  });
+
+  records.items.forEach(function(e){
+    e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.items.sort(function(a, b) {
+    return a.region.localeCompare(b.region);
   });
 
   return records;
@@ -141,6 +239,14 @@ function getProgramData(data, state) {
 
   records.items.sort(function(a, b) {
     return a.x - b.x;
+  });
+
+  records.items.forEach(function(e){
+    e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.items.sort(function(a, b) {
+    return a.region.localeCompare(b.region);
   });
 
   return records;
@@ -198,7 +304,6 @@ function getRadarData(data, state) {
 
     records.items.splice(0, 0, temp);
   });
-
 
   return records;
 };
