@@ -69,7 +69,16 @@ function handleData(data) {
     return !isNaN(innerElement.ano);
   });
 
-  return records;
+  var format = d3.time.format("%Y");
+  records.forEach(function(d) {
+    d.x = format.parse(d.ano + "");
+    d.y = +d.total;
+  });
+
+  records.sort(function(a, b) {
+    return a.x - b.x;
+  });
+return records;
 };
 
 function getCityData(data) {
@@ -84,6 +93,16 @@ function getCityData(data) {
   // remove NaN values from collection
   records = records.filter(function(innerElement) {
     return !isNaN(innerElement.ano);
+  });
+
+  var format = d3.time.format("%Y");
+  records.forEach(function(d) {
+    d.x = format.parse(d.ano + "");
+    d.y = +d.cities;
+  });
+
+  records.sort(function(a, b) {
+    return a.x - b.x;
   });
 
   return records;
@@ -103,6 +122,16 @@ function getProgramData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var format = d3.time.format("%Y");
+  records.forEach(function(d) {
+    d.x = format.parse(d.ano + "");
+    d.y = +d.programs;
+  });
+
+  records.sort(function(a, b) {
+    return a.x - b.x;
+  });
+
   return records;
 };
 
@@ -120,7 +149,11 @@ function getRadarData(data, state) {
           GROUP BY NM_ORGAO_CONCEDENTE \
           ORDER BY total DESC";
   var recordsRadar = alasql(queryRadar, [data]);
-
+  
+  recordsRadar.forEach(function(d){
+      d.value = d.total;
+  });
+  
   return [recordsRadar];
 };
 
