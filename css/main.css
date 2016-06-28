@@ -18,3 +18,114 @@ div.tooltip {
     border-radius: 8px;			
     pointer-events: none;			
 }
+
+#search {
+  border: 0;
+  font-weight: lighter;
+  font-size: 2em;
+  padding: 5px 45px 5px 15px;
+  margin: 0px 0px 0px 35px;
+}
+
+#search:focus {
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+#search-icon {
+  margin-top: 10px;
+}
+
+#search-icon.active {
+  color: black;
+}
+
+.parallax-container img {
+  -webkit-filter: brightness(60%);
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+}
+
+.parallax-container h3 {
+  color: rgba(255,255,255,.9);
+}
+
+.parallax-container .section {
+  width: 100%;
+}
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+
+/************************ CSS for map *************************/
+#map .background {
+  fill: none;
+  pointer-events: all;
+}
+
+#map .states {
+  fill: grey;
+  stroke: white;
+}
+
+#map .states .active {
+  fill: orange;
+}
+
+
+/************************ CSS for radar *************************/
+#radar {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  fill: #242424;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+  cursor: default;
+}
+
+#radar .legend {
+  font-family: 'Raleway', sans-serif;
+  fill: #333333;
+}
+
+#radar .tooltip {
+  fill: #333333;
+}
+
+
+/************************ CSS for stack *************************/
+#stack-investments, #stack-total-cities, #stack-total-programs {
+  font: 10px sans-serif;
+}
+
+#stack-investments .axis path, #stack-total-cities .axis path, #stack-total-programs .axis path,
+#stack-investments .axis line, #stack-total-cities .axis line, #stack-total-programs .axis line,
+{
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#stack-total-cities .axis text, #stack-total-programs .axis text {
+  display: none;
+}
