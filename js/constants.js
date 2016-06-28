@@ -25,40 +25,41 @@ const STATE_NAME_TEXT 					 = ".state-name";
 const STATE_CAPITAL_TEXT 				 = "#state-capital";
 const STATE_REGION_TEXT 				 = "#state-region";
 const STATE_POPULATION_TEXT 			 = "#state-population";
+const STATE_CITIES_TEXT        = "#state-cities";
 const STATE_FLAG 						 = "#state-flag";
 
 
 
 // states' general data
 var STATES_DATA = {
-    "BR": {name: "Brasil"              ,  capital: "Brasília"                          },
-    "AC": {name: "Acre"                ,  capital: "Rio Branco"      , region: "Norte"},
-    "AL": {name: "Alagoas"             ,  capital: "Maceió"          , region: "Nordeste"},
-    "AP": {name: "Amapá"               ,  capital: "Macapá"          , region: "Norte"},
-    "AM": {name: "Amazonas"            ,  capital: "Manaus"          , region: "Norte"},
-    "BA": {name: "Bahia"               ,  capital: "Salvador"        , region: "Nordeste"},
-    "CE": {name: "Ceará"               ,  capital: "Fortaleza"       , region: "Nordeste"},
-    "DF": {name: "Distrito Federal"    ,  capital: "Brasília"        , region: "Centro-Oeste"},
-    "ES": {name: "Espírito Santo"      ,  capital: "Vitória"         , region: "Sudeste"},
-    "GO": {name: "Goiás"               ,  capital: "Goiânia"         , region: "Centro-Oeste"},
-    "MA": {name: "Maranhão"            ,  capital: "São Luís"        , region: "Nordeste"},
-    "MT": {name: "Mato Grosso"         ,  capital: "Cuiabá"          , region: "Centro-Oeste"},
-    "MS": {name: "Mato Grosso do Sul"  ,  capital: "Campo Grande"    , region: "Centro-Oeste"},
-    "MG": {name: "Minas Gerais"        ,  capital: "Belo Horizonte"  , region: "Sudeste"},
-    "PA": {name: "Pará"                ,  capital: "Belém"           , region: "Norte"},
-    "PB": {name: "Paraíba"             ,  capital: "João Pessoa"     , region: "Nordeste"},
-    "PR": {name: "Paraná"              ,  capital: "Curitiba"        , region: "Sul"},
-    "PE": {name: "Pernambuco"          ,  capital: "Recife"          , region: "Nordeste"},
-    "PI": {name: "Piauí"               ,  capital: "Teresina"        , region: "Nordeste"},
-    "RJ": {name: "Rio de Janeiro"      ,  capital: "Rio de Janeiro"  , region: "Sudeste"},
-    "RN": {name: "Rio Grande do Norte" ,  capital: "Natal"           , region: "Nordeste"},
-    "RS": {name: "Rio Grande do Sul"   ,  capital: "Porto Alegre"    , region: "Sul"},
-    "RO": {name: "Rondônia"            ,  capital: "Porto Velho"     , region: "Norte"},
-    "RR": {name: "Roraima"             ,  capital: "Boa Vista"       , region: "Norte"},
-    "SC": {name: "Santa Catarina"      ,  capital: "Florianópolis"   , region: "Sul"},
-    "SP": {name: "São Paulo"           ,  capital: "São Paulo"       , region: "Sudeste"},
-    "SE": {name: "Sergipe"             ,  capital: "Aracaju"         , region: "Nordeste"},
-    "TO": {name: "Tocantins"           ,  capital: "Palmas"          , region: "Norte"}
+    "BR": {name: "Brasil"              ,  capital: "Brasília"        , population: "202.768.562", cities: "5.570" },
+    "AC": {name: "Acre"                ,  capital: "Rio Branco"      , region: "Norte", population: "803.513", cities: "22"},
+    "AL": {name: "Alagoas"             ,  capital: "Maceió"          , region: "Nordeste", population: "3.340.932", cities: "102"},
+    "AP": {name: "Amapá"               ,  capital: "Macapá"          , region: "Norte", population: "766.679", cities: "16"},
+    "AM": {name: "Amazonas"            ,  capital: "Manaus"          , region: "Norte", population: "3.938.336", cities: "62"},
+    "BA": {name: "Bahia"               ,  capital: "Salvador"        , region: "Nordeste", population: "15.203.934", cities: "417"},
+    "CE": {name: "Ceará"               ,  capital: "Fortaleza"       , region: "Nordeste", population: "8.904.459", cities: "184"},
+    "DF": {name: "Distrito Federal"    ,  capital: "Brasília"        , region: "Centro-Oeste", population: "2.914.830", cities: "1"},
+    "ES": {name: "Espírito Santo"      ,  capital: "Vitória"         , region: "Sudeste", population: "3.929.911", cities: "78"},
+    "GO": {name: "Goiás"               ,  capital: "Goiânia"         , region: "Centro-Oeste", population: "6.610.681", cities: "246"},
+    "MA": {name: "Maranhão"            ,  capital: "São Luís"        , region: "Nordeste", population: "6.904.241", cities: "217"},
+    "MT": {name: "Mato Grosso"         ,  capital: "Cuiabá"          , region: "Centro-Oeste", population: "3.265.486", cities: "141"},
+    "MS": {name: "Mato Grosso do Sul"  ,  capital: "Campo Grande"    , region: "Centro-Oeste", population: "2.449.341", cities: "79"},
+    "MG": {name: "Minas Gerais"        ,  capital: "Belo Horizonte"  , region: "Sudeste", population: "20.869.101", cities: "853"},
+    "PA": {name: "Pará"                ,  capital: "Belém"           , region: "Norte", population: "8.175.113", cities: "144"},
+    "PB": {name: "Paraíba"             ,  capital: "João Pessoa"     , region: "Nordeste", population: "3.972.202", cities: "223"},
+    "PR": {name: "Paraná"              ,  capital: "Curitiba"        , region: "Sul", population: "11.163.018", cities: "399"},
+    "PE": {name: "Pernambuco"          ,  capital: "Recife"          , region: "Nordeste", population: "9.345.173", cities: "185"},
+    "PI": {name: "Piauí"               ,  capital: "Teresina"        , region: "Nordeste", population: "3.204.028", cities: "224"},
+    "RJ": {name: "Rio de Janeiro"      ,  capital: "Rio de Janeiro"  , region: "Sudeste", population: "16.550.024", cities: "92"},
+    "RN": {name: "Rio Grande do Norte" ,  capital: "Natal"           , region: "Nordeste", population: "3.442.175", cities: "167"},
+    "RS": {name: "Rio Grande do Sul"   ,  capital: "Porto Alegre"    , region: "Sul", population: "11.247.972", cities: "497"},
+    "RO": {name: "Rondônia"            ,  capital: "Porto Velho"     , region: "Norte", population: "1.768.204", cities: "52"},
+    "RR": {name: "Roraima"             ,  capital: "Boa Vista"       , region: "Norte", population: "505.665", cities: "15"},
+    "SC": {name: "Santa Catarina"      ,  capital: "Florianópolis"   , region: "Sul", population: "6.819.190", cities: "295"},
+    "SP": {name: "São Paulo"           ,  capital: "São Paulo"       , region: "Sudeste", population: "44.396.484", cities: "645"},
+    "SE": {name: "Sergipe"             ,  capital: "Aracaju"         , region: "Nordeste", population: "2.242.937", cities: "75"},
+    "TO": {name: "Tocantins"           ,  capital: "Palmas"          , region: "Norte", population: "1.515.126", cities: "139"}
 };
 
 var COLORS = ["#FDB462", "#FDB462", "#FDB462", "#FDB462", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", "#8DA0CB", 

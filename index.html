@@ -51,8 +51,9 @@
                 <div class="card-panel">  
                   <img id="state-flag" class="responsive-img" src="" alt="">
                   <h5 class="state-name"></h5>
-                  <span><b>Capital: </b><span id="state-capital"></span></span><br>
                   <span><b>Region: </b><span id="state-region"></span></span><br>
+                  <span><b>Capital: </b><span id="state-capital"></span></span><br>
+                  <span><b>No. Cities: </b><span id="state-cities"></span></span><br>
                   <span><b>Population: </b><span id="state-population"></span></span><br>
                 </div>
               </div>
@@ -172,6 +173,7 @@
               $(STATE_CAPITAL_TEXT).text(state.capital);
               $(STATE_REGION_TEXT).text(state.region);
               $(STATE_POPULATION_TEXT).text(state.population);
+              $(STATE_CITIES_TEXT).text(state.cities);
               $(STATE_FLAG).attr("src", "img/" + stateId + ".png");  
               $(TOTAL_CITIES_TEXT).text(filteredStackedCitiesData.total);
               $(TOTAL_PROGRAMS_TEXT).text(filteredStackedProgramData.total);
