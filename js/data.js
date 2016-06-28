@@ -174,13 +174,8 @@ function getCityData(data, state) {
 
   var queryTotalCities = "SELECT COUNT(DISTINCT NM_MUNICIPIO_PROPONENTE) AS total_cities FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
-          stateCondition +
-          " GROUP BY UF_PROPONENTE";
-  var resTotal = alasql(queryTotalCities, [data]);
-
-  resTotal.forEach(function(d) {
-    records.total += d.total_cities;
-  });
+          stateCondition;
+  records.total = alasql(queryTotalCities, [data])[0].total_cities;
 
   // remove NaN values from collection
   records.items = records.items.filter(function(innerElement) {
@@ -209,8 +204,8 @@ function getProgramData(data, state) {
   
   var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
   var query = "SELECT UF_PROPONENTE AS uf, \
-          ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT ID_CONVENIO) AS programs FROM ? \
-          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
+          ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT ID_CONVENIO) as assignments FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" +
           stateCondition +
           " GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
@@ -221,13 +216,15 @@ function getProgramData(data, state) {
     return !isNaN(innerElement.ano);
   });
 
-  records.total = 0;
+  query = "SELECT COUNT(DISTINCT ID_CONVENIO) assignments FROM ? \
+          WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" +
+          stateCondition;
+  records.total = alasql(query, [data])[0].assignments;
+
   var format = d3.time.format("%Y");
   records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
-    d.y = +d.programs;
-
-    records.total += d.y;
+    d.y = +d.assignments;
   });
 
   records.items.sort(function(a, b) {
