@@ -13,9 +13,9 @@
       <body>
 
         <nav class="grey darken-4" role="navigation">
-          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
+          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">SICONVIS</a>
             <ul class="right hide-on-med-and-down">
-              <li><a href="#">Visualização de Dados</a></li>
+              <li><a href="#">DCC/UFMG</a></li>
             </ul>
           </div>
         </nav>
@@ -70,7 +70,7 @@
                 </div>
               </div>  
               <div class="col m4 s12">
-              <h5>How <span class="state-name"></span> is dividing its money between the departaments?</h5>
+              <h5>How <span class="state-name"></span> is dividing its money between departaments?</h5>
                 <div id="radar"></div>
               </div>  
             </div>
@@ -92,18 +92,24 @@
           <div class="section">
             <div class="row">
               <div class="col s12">
+              <div class="card-panel grey lighten-4">
                 <h5>Regarding the total amount invested</h5>
                 <div id="stack-investments-total"></div>
+              </div>
               </div>
             </div>
             <div class="row">
               <div class="col m6 s12">
+              <div class="card-panel grey lighten-4">
                 <h5>Regarding state's counterpart</h5>
                 <div id="stack-investments-counterpart"></div>
               </div>
+              </div>
               <div class="col m6 s12">
+              <div class="card-panel grey lighten-4">
                 <h5>Regarding governement investment</h5>
                 <div id="stack-investments-state"></div>
+              </div>
               </div>
             </div>
           </div>
@@ -115,11 +121,11 @@
             <div class="col l8 s12">
               <h5 class="white-text">About</h5>
               <p class="grey-text text-lighten-4">
-                Os dados deste trabalho foram coletados do Portal de Convênios do Governo Federal (SICONV), sendo portanto de uso público, conforme estipulado na Lei de Acesso à Informação (Lei nº 12.527 de 2011).
+                All data used by these visualizations were collected from Portal de Convênios do Governo Federal (SICONV), being, therefore, public, acoording to Brazilian Law of Information Access (Law  nº 12.527 of 2011).
               </p>
             </div>
             <div class="col l4 s12">
-              <h5 class="white-text">Integrantes</h5>
+              <h5 class="white-text">Made by</h5>
               <ul>
                 <li><a class="white-text" href="http://jemaf.github.io">João Eduardo Montandon</a></li>
                 <li><a class="white-text" href="#!">José Laerte Xavier</a></li>
@@ -129,7 +135,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container">
-          Made by <a class="grey-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+            Implemented as a final project of Data Visualization discipline at DCC/UFMG.
           </div>
         </div>
         </footer>
@@ -232,7 +238,7 @@
             stackInvestmentsTotal
                 .container(STACK_INVESTMENTS_TOTAL_CONTAINER)
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(960)
+                .width(900)
                 .height(250)
                 .data(stackedData)
                 .color(d3.scale.ordinal().range(COLORS))
@@ -244,7 +250,7 @@
             stackInvestmentsCounterpart
                 .container(STACK_INVESTMENTS_COUNTERPART_CONTAINER)
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(450)
+                .width(400)
                 .height(200)
                 .data(stackInvestmentsCounterpartData)
                 .color(d3.scale.ordinal().range(COLORS))
@@ -256,7 +262,7 @@
             stackInvestmentsState
                 .container(STACK_INVESTMENTS_STATE_CONTAINER)
                 .margin({top: 20, right: 30, bottom: 30, left: 40})
-                .width(450)
+                .width(400)
                 .height(200)
                 .data(stackInvestmentStateData)
                 .color(d3.scale.ordinal().range(COLORS))

@@ -83,10 +83,7 @@ function handleData(data) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
-  records.sort(function(a, b) {
-    return a.region.localeCompare(b.region);
-  });
-return records;
+  return records;
 };
 
 /**
@@ -123,11 +120,7 @@ function getInvestmentStateData(data) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
-  records.sort(function(a, b) {
-    return a.region.localeCompare(b.region);
-  });
-
-return records;
+  return records;
 };
 
 /**
@@ -164,11 +157,7 @@ function getInvestmentsCounterpartData(data) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
-  records.sort(function(a, b) {
-    return a.region.localeCompare(b.region);
-  });
-
-return records;
+  return records;
 };
 
 function getCityData(data, state) {
@@ -212,10 +201,6 @@ function getCityData(data, state) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
-  records.items.sort(function(a, b) {
-    return a.region.localeCompare(b.region);
-  });
-
   return records;
 };
 
@@ -251,10 +236,6 @@ function getProgramData(data, state) {
 
   records.items.forEach(function(e){
     e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.items.sort(function(a, b) {
-    return a.region.localeCompare(b.region);
   });
 
   return records;
