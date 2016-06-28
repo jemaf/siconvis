@@ -83,6 +83,10 @@ function handleData(data) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
+  records.sort(function(a, b) {
+    return a.region < b.region ? -1 : a.region > b.region;
+  });
+
   return records;
 };
 
@@ -120,6 +124,10 @@ function getInvestmentStateData(data) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
+  records.sort(function(a, b) {
+    return a.region < b.region ? -1 : a.region > b.region;
+  });
+
   return records;
 };
 
@@ -155,6 +163,10 @@ function getInvestmentsCounterpartData(data) {
 
   records.forEach(function(e){
     e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.sort(function(a, b) {
+    return a.region < b.region ? -1 : a.region > b.region;
   });
 
   return records;
@@ -196,6 +208,10 @@ function getCityData(data, state) {
     e.region = STATES_DATA[e.uf].region; 
   });
 
+  records.items.sort(function(a, b) {
+    return a.region < b.region ? -1 : a.region > b.region;
+  });
+
   return records;
 };
 
@@ -233,6 +249,10 @@ function getProgramData(data, state) {
 
   records.items.forEach(function(e){
     e.region = STATES_DATA[e.uf].region; 
+  });
+
+  records.items.sort(function(a, b) {
+    return a.region < b.region ? -1 : a.region > b.region;
   });
 
   return records;

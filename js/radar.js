@@ -7,27 +7,13 @@
 
 function radarChart() {
 
-  function init() {
-    return init.width(600)
-        .height(600)
-        .margin({top: 20, right: 20, bottom: 20, left: 20})
-        .levels(3)
-        .maxValue(0)
-        .labelFactor(1.25)
-        .wrapWidth(60)
-        .opacityArea(0.35)
-        .dotRadius(4)
-        .opacityCircles(0.1)
-        .strokeWidth(2)
-        .roundStrokes(false)
-        .color(d3.scale.category10());
-  }
+	var init = new Object();
 
 	init.draw = function() {	
 		//If the supplied maxValue is smaller than the actual one, replace by the max in the data
-		var maxValue = Math.max(init.maxValue(), d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+		var maxValue = Math.max(init.maxValue(), d3.max(init.data(), function(i){return d3.max(i.map(function(o){return o.value;}))}));
 			
-		var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
+		var allAxis = (init.data()[0].map(function(i, j){return i.axis})),	//Names of each axis
 			total = allAxis.length,					//The number of different axes
 			radius = Math.min(init.width()/2, init.height()/2), 	//Radius of the outermost circle
 			Format = d3.format('%'),			 	//Percentage formatting
@@ -43,13 +29,13 @@ function radarChart() {
 		/////////////////////////////////////////////////////////
 
 		//Remove whatever chart with the same id/class was present before
-		d3.select(container).select("svg").remove();
+		d3.select(init.container()).select("svg").remove();
 		
 		//Initiate the radar chart SVG
-		var svg = d3.select(container).append("svg")
+		var svg = d3.select(init.container()).append("svg")
 				.attr("width",  init.width() + init.margin().left + init.margin().right)
 				.attr("height", init.height() + init.margin().top + init.margin().bottom)
-				.attr("class", "radar"+container);
+				.attr("class", "radar"+init.container());
 		//Append a g element		
 		var g = svg.append("g")
 				.attr("transform", "translate(" + (init.width()/2 + init.margin().left) + "," + (init.height()/2 + init.margin().top) + ")");
@@ -148,7 +134,7 @@ function radarChart() {
 					
 		//Create a wrapper for the blobs	
 		var blobWrapper = g.selectAll(".radarWrapper")
-			.data(data)
+			.data(init.data())
 			.enter().append("g")
 			.attr("class", "radarWrapper");
 				
@@ -202,7 +188,7 @@ function radarChart() {
 		
 		//Wrapper for the invisible circles on top
 		var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
-			.data(data)
+			.data(init.data())
 			.enter().append("g")
 			.attr("class", "radarCircleWrapper");
 			
@@ -273,135 +259,135 @@ function radarChart() {
 
 	init.container = function(value) {
 	if (!arguments.length) 
-	  return container;
+	  return init._container;
 
-	  container = value;
+	  init._container = value;
 	  return init;
 	};
 
 
 	init.margin = function(value) {
 		if (!arguments.length) 
-			return margin;
+			return init._margin;
 
-    	margin = value;
+    	init._margin = value;
     	return init;
 	};
 
 
 	init.width = function(value) {
 		if (!arguments.length) 
-			return width;
+			return init._width;
 
-    	width = value;
+    	init._width = value;
     	return init;
 	};
 
 
 	init.height = function(value) {
 		if (!arguments.length) 
-			return height;
+			return init._height;
 
-    	height = value;
+    	init._height = value;
     	return init;
 	};
 
 
 	init.data = function(value) {
 		if (!arguments.length) 
-			return data;
+			return init._data;
 
-    	data = value;
+    	init._data = value;
     	return init;
 	};
 
 
 	init.color = function(value) {
 		if (!arguments.length) 
-			return color;
+			return init._color;
 
-    	color = value;
+    	init._color = value;
     	return init;
 	};
 
 
 	init.maxValue = function(value) {
 		if(!arguments.length)
-			return maxValue;
+			return init._maxValue;
 
-		maxValue = value;
+		init._maxValue = value;
 		return init;
 	};
 
 
 	init.levels = function(value) {
 		if(!arguments.length)
-			return levels;
+			return init._levels;
 
-		levels = value;
+		init._levels = value;
 		return init;
 	};
 
 
 	init.roundStrokes = function(value) {
 		if(!arguments.length)
-			return roundStrokes;
+			return init._roundStrokes;
 
-		roundStrokes = value;
+		init._roundStrokes = value;
 		return init;
 	};
 
 
   init.labelFactor = function(value) {
     if(!arguments.length)
-      return labelFactor;
+      return init._labelFactor;
 
-    labelFactor = value;
+    init._labelFactor = value;
     return init;
   };
 
 
   init.wrapWidth = function(value) {
     if(!arguments.length)
-      return wrapWidth;
+      return init._wrapWidth;
 
-    wrapWidth = value;
+    init._wrapWidth = value;
     return init;
   };
 
 
   init.opacityArea = function(value) {
     if(!arguments.length)
-      return opacityArea;
+      return init._opacityArea;
 
-    opacityArea = value;
+    init._opacityArea = value;
     return init;
   };  
 
 
   init.dotRadius = function(value) {
     if(!arguments.length)
-      return dotRadius;
+      return init._dotRadius;
 
-    dotRadius = value;
+    init._dotRadius = value;
     return init;
   }; 
 
 
   init.opacityCircles = function(value) {
     if(!arguments.length)
-      return opacityCircles;
+      return init._opacityCircles;
 
-    opacityCircles = value;
+    init._opacityCircles = value;
     return init;
   }; 
 
 
   init.strokeWidth = function(value) {
     if(!arguments.length)
-      return strokeWidth;
+      return init._strokeWidth;
 
-    strokeWidth = value;
+    init._strokeWidth = value;
     return init;
   }; 
 

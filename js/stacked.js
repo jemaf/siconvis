@@ -5,18 +5,7 @@
 */
 
 function stackedChart() {
-
-  function init() {
-    return init
-            .width(400)
-            .height(200)
-            .margin({top: 20, right: 30, bottom: 30, left: 40})
-            .color(d3.scale.category20c())
-            .xAxis({ orientation: "bottom", ticks: d3.time.days })
-            .yAxis({ orientation: "left" })
-            .nestKey("key");
-  }
-
+  var init = new Object();
 
   init.draw = function() {
     var x = d3.time.scale()
@@ -34,7 +23,7 @@ function stackedChart() {
         .y(function(d) { return d.y; });
 
     var nest = d3.nest()
-        .key(function(d) { return d[nestKey]; });
+        .key(function(d) { return d[init.nestKey()]; });
 
     var area = d3.svg.area()
         .interpolate("cardinal")
@@ -42,13 +31,21 @@ function stackedChart() {
         .y0(function(d) { return y(d.y0); })
         .y1(function(d) { return y(d.y0 + d.y); });
 
-    var svg = d3.select(container).append("svg")
+
+    //remove previous visualization (if it exists)
+    d3.select(init.container()).select("svg").remove();
+
+    var svg = d3.select(init.container()).append("svg")
         .attr("width", init.width() + init.margin().left + init.margin().right)
         .attr("height", init.height() + init.margin().top + init.margin().bottom)
       .append("g")
         .attr("transform", "translate(" + init.margin().left + "," + init.margin().top + ")");
 
     var layers = stack(nest.entries(init.data()));
+
+    var div = d3.select("body").append("div") 
+      .attr("class", "tooltip")       
+      .style("opacity", 0);
 
     x.domain(d3.extent(init.data(), function(d) { return d.x; }));
     y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
@@ -68,75 +65,130 @@ function stackedChart() {
     svg.append("g")
         .attr("class", "y axis")
         .call(init.yAxis());
+
+    if(init.hasTooltip()){
+      svg.selectAll("path")
+      .attr("opacity", 1)
+      .on("mouseover", function(d, i) {
+          svg.selectAll("path").transition()
+              .duration(200)
+              .attr("opacity", function(d, j) {
+                return j != i ? 0.7 : 1;
+            });
+          div.transition()    
+            .duration(200)    
+            .style("opacity", .9);    
+          div.html(d.key)  
+            .style("left", (d3.event.pageX) + "px")   
+            .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d, i) {
+        svg.selectAll("path")
+            .transition()
+            .duration(500)
+            .attr("opacity", "1");
+          div.transition()    
+            .duration(500)    
+            .style("opacity", 0);
+      });
+    }
+  };
+
+  init.hasTooltip = function(value) {
+    if (!arguments.length) 
+      return hasTooltip;
+
+    hasTooltip = value;
+    return init;
+  };
+
+  init.animate = function(data, duration) {
+    // Scale the range of the data again 
+    // x.domain(d3.extent(data, function(d) { return d.x; }));
+    // y.domain([0, d3.max(data, function(d) { return d.y; })]);
+
+    // Select the section we want to apply our changes to
+    var svg = d3.select(container).transition();
+
+    // Make the changes
+    svg.select(".line")   // change the line
+        .duration(duration)
+        .attr("d", function(d) { return area(d.values); });
+    svg.select(".x.axis") // change the x axis
+        .duration(duration)
+        .call(xAxis);
+    svg.select(".y.axis") // change the y axis
+        .duration(duration)
+        .call(yAxis);
   };
 
 
   init.container = function(value) {
     if (!arguments.length) 
-      return container;
+      return init._container;
 
-    container = value;
+    init._container = value;
     return init;
   };
 
 
   init.margin = function(value) {
     if (!arguments.length) 
-      return margin;
+      return init._margin;
 
-    margin = value;
+    init._margin = value;
     return init;
   };
 
 
   init.width = function(value) {
     if (!arguments.length) 
-      return width;
+      return init._width;
 
-    width = value;
+    init._width = value;
     return init;
   };
 
 
   init.height = function(value) {
     if (!arguments.length) 
-      return height;
+      return init._height;
 
-    height = value;
+    init._height = value;
     return init;
   };
 
 
   init.data = function(value) {
     if (!arguments.length) 
-      return data;
+      return init._data;
 
-    data = value;
+    init._data = value;
     return init;
   };
 
 
   init.color = function(value) {
     if (!arguments.length) 
-      return color;
+      return init._color;
 
-    color = value;
+    init._color = value;
     return init;
   };
 
 
   init.xAxis = function(values) {
     if (!arguments.length) 
-      return xAxis;
+      return init._xAxis;
 
     var x = d3.time.scale().range([0, init.width()]);
 
-    xAxis = d3.svg.axis()
-      .scale(x);
+    init._xAxis = d3.svg.axis()
+        .scale(x);
 
-    if (values.orientation != undefined) xAxis = xAxis.orient(values.orientation);
-    if (values.ticks != undefined)       xAxis = xAxis.ticks(values.ticks);
-    if (values.tickSize != undefined)    xAxis = xAxis.tickSize(values.tickSize);
+    if (values.orientation != undefined) init._xAxis = init._xAxis.orient(values.orientation);
+    if (values.ticks != undefined)       init._xAxis = init._xAxis.ticks(values.ticks);
+    if (values.tickSize != undefined)    init._xAxis = init._xAxis.tickSize(values.tickSize);
       
     return init;  
   };
@@ -144,16 +196,16 @@ function stackedChart() {
 
   init.yAxis = function(values) {
     if (!arguments.length) 
-      return yAxis;
+      return init._yAxis;
 
     var y = d3.scale.linear().range([init.height(), 0]);
 
-    yAxis = d3.svg.axis()
-      .scale(y);
+    init._yAxis = d3.svg.axis()
+        .scale(y);
 
-    if (values.orientation != undefined) yAxis = yAxis.orient(values.orientation);
-    if (values.ticks != undefined)       yAxis = yAxis.ticks(values.ticks);
-    if (values.tickSize != undefined)    yAxis = yAxis.tickSize(values.tickSize);
+    if (values.orientation != undefined) init._yAxis = init._yAxis.orient(values.orientation);
+    if (values.ticks != undefined)       init._yAxis = init._yAxis.ticks(values.ticks);
+    if (values.tickSize != undefined)    init._yAxis = init._yAxis.tickSize(values.tickSize);
 
     return init;
   };
@@ -161,9 +213,9 @@ function stackedChart() {
 
   init.nestKey = function(value) {
     if (!arguments.length) 
-      return nestKey;
+      return init._nestKey;
 
-    nestKey = value;
+    init._nestKey = value;
     return init;
   };
 
