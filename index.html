@@ -162,7 +162,7 @@
         <script type="text/javascript" charset="utf-8"> 
           $('.parallax').parallax();
 
-          function loadData2(data, stateId) {
+          function loadData2(data, stateId, callback) {
             if (stateId == undefined || stateId == "" || stateId == "BR") {
               var filteredRadarData = getRadarData(data);
               var filteredStackedData = handleData(data);
@@ -194,23 +194,13 @@
                 $(STATE_REGION_TEXT).parent().show();
               else 
                 $(STATE_REGION_TEXT).parent().hide();
+
+              if (callback)
+                callback(filteredRadarData, filteredStackedData, filteredStackedCitiesData, filteredStackedProgramData);
             }
           }
 
-        
           loadData(function(err, data) {
-            // removes loading screen
-            $('body').toggleClass('loaded');
-
-            $(SEARCH_BUTTON).bind("enterKey",function(e){
-              loadData2(data, e.currentTarget.value);
-            });
-
-            $(SEARCH_BUTTON).keyup(function(e){
-              if(e.keyCode == 13)
-                $(this).trigger("enterKey");
-            });
-
             loadData2(data);
               
             var radarData = getRadarData(data);
@@ -225,7 +215,7 @@
 
             radar = radarChart();
 
-            radar()
+            radar
                 .container(RADAR_CONTAINER)
                 .margin({top: 70, right: 70, bottom: 70, left: 70})
                 .width(230)
@@ -233,8 +223,13 @@
                 .data(radarData.items)
                 .color(d3.scale.ordinal().range(COLORS_REGION))
                 .maxValue(0.30)
-                .levels(4)
+                .levels(3)
                 .roundStrokes(true)
+                .labelFactor(1.25)
+                .dotRadius(4)
+                .wrapWidth(60)
+                .opacityArea(0.35)
+                .opacityCircles(0.1)
                 .draw();
 
             stackInvestmentsTotal = stackedChart();
@@ -308,6 +303,32 @@
                 .nestKey("uf")
                 .hasTooltip(false)
                 .draw();
+
+            // removes loading screen
+            $('body').toggleClass('loaded');
+
+            // handles state name's input event
+            $(SEARCH_BUTTON).bind("enterKey",function(e){
+              loadData2(data, e.currentTarget.value, function(radarData, stackedData, citiesData, programData) {
+
+                stackCities
+                    .data(citiesData.items)
+                    .draw();
+
+                stackPrograms
+                    .data(programData.items)
+                    .draw();
+
+                radar
+                    .data(radarData.items)
+                    .draw();
+              });
+            });
+
+            $(SEARCH_BUTTON).keyup(function(e){
+              if(e.keyCode == 13)
+                $(this).trigger("enterKey");
+            });
           });
         </script>
     </body>
