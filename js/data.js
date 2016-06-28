@@ -80,11 +80,12 @@ function handleData(data) {
   });
 
   records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
+    e.id = STATES_DATA[e.uf].id; 
   });
 
   records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
+    return a.id - b.id;
+    //return a.region < b.region ? -1 : a.region > b.region;
   });
 
   return records;
