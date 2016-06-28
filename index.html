@@ -1,57 +1,137 @@
 <!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html>
+      <head>
+          <meta charset="utf-8">
+          <meta http-equiv="x-ua-compatible" content="ie=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-        <link type="text/css" rel="stylesheet" href="css/main.css">
-        <title>SICONVIS</title>
-    </head>
-    <body>
+          <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+          <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+          <link type="text/css" rel="stylesheet" href="css/main.css">
+          <link type="text/css" rel="stylesheet" href="css/loader.css">
 
-        <nav class="indigo darken-4" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">DCC/UFMG</a>
-              <ul class="right hide-on-med-and-down">
-                <li><a href="#">Visualização de Dados</a></li>
-              </ul>
-            </div>
+          <title>SICONVIS</title>
+      </head>
+      <body>
+
+        <nav class="grey darken-4" role="navigation">
+          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">SICONVIS</a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="#">DCC/UFMG</a></li>
+            </ul>
+          </div>
         </nav>
-        <div class="section indigo lighten-5" id="index-banner">
-            <div class="container">
-              <h1 class="header indigo-text">SICONVIS</h1> <h5 class="header col s12 light">Uma visualização de como são alocadas as verbas de convênios do Governo Federal</h5>
-            </div>
+
+        <div id="loader-wrapper">
+          <div id="loader"></div>
+          <div class="loader-section section-left"></div>
+          <div class="loader-section section-right"></div>
         </div>
 
+        <div id="index-banner" class="parallax-container" style="filter: brightness(50%);">
+          <div class="section no-pad-bot">
+            <div class="container">
+              <br><br>
+              <div class="row center">
+                <h3 class="header col s12 light" style="margin-top: 60px">How is the government investing in your state?</h3>
+              </div>
+              <div class="row center">
+                  <div class="input-field col s12">
+                    <div class="card white">
+                      <i id="search-icon" class="material-icons prefix">search</i>
+                      <input id="search" type="text" placeholder="eg.: MG, RS, SP, RR, RO, etc...">
+                    </div>
+                  </div>
+              </div>
+              <br><br>
+
+            </div>
+          </div>
+          <div class="parallax"><img src="img/background.jpg" alt="Unsplashed background img 1"></div>
+        </div>
 
         <div class="container">
           <div class="section">
-          <h5>Contrapartida Total por Estado</h5>
-          <p>Esta visualização apresenta a variação entre os anos de 2009 e 2016 do total (em valores absolutos) de contrapartida paga por cada estado quando da assinatura de um convênio com o Governo Federal. Pressione o botão abaixo para normalizar os dados em valores percentuais anuais da contrapartida de cada estado. Ambas as visualizações estão em <b>escala logarítmica<b>.</p>
             <div class="row">
-              <div class="col s12" style="height: 500px;" id="container-stack">
-              <h5>Carregando...</h5>
+              <div class="col m4 s12">
+                <div class="card-panel">  
+                  <img id="state-flag" class="responsive-img" src="" alt="">
+                  <h5 class="state-name"></h5>
+                  <span><b>Region: </b><span id="state-region"></span></span><br>
+                  <span><b>Capital: </b><span id="state-capital"></span></span><br>
+                  <span><b>No. Cities: </b><span id="state-cities"></span></span><br>
+                  <span><b>Population: </b><span id="state-population"></span></span><br>
+                </div>
               </div>
-              <div class="col s1 offset-s10">
-                <a class="waves-effect waves-light btn red lighten-2" id="toggle-stack">Normalizar</a>
+              <div class="col m4 s12">
+                <div class="card-panel grey lighten-4">
+                  <p>Number of cities attended</p>
+                  <h5 id="total-cities-label"></h5>
+                  <div id="stack-total-cities"></div>
+                </div>
+                <div class="card-panel grey lighten-4">
+                  <p>Number of agreements approved</p>
+                  <h5 id="total-programs-label"></h5>
+                  <div id="stack-total-programs"></div>
+                </div>
+              </div>  
+              <div class="col m4 s12">
+              <h5>How <span class="state-name"></span> is dividing its money between departaments?</h5>
+                <div id="radar"></div>
+              </div>  
+            </div>
+          </div>  
+        </div>
+
+        <div class="parallax-container valign-wrapper">
+          <div class="section no-pad-bot">
+            <div class="container">
+              <div class="row center">
+                <h3 class="header col s12 light">How these investments evolve over time?</h3>
+              </div>
+            </div>
+          </div>
+          <div class="parallax"><img src="img/background.jpg" alt="Unsplashed background img 2"></div>
+        </div>
+
+        <div class="container">
+          <div class="section">
+            <div class="row">
+              <div class="col s12">
+              <div class="card-panel grey lighten-4">
+                <h5>Regarding the total amount invested</h5>
+                <div id="stack-investments-total"></div>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col m6 s12">
+              <div class="card-panel grey lighten-4">
+                <h5>Regarding state's counterpart</h5>
+                <div id="stack-investments-counterpart"></div>
+              </div>
+              </div>
+              <div class="col m6 s12">
+              <div class="card-panel grey lighten-4">
+                <h5>Regarding governement investment</h5>
+                <div id="stack-investments-state"></div>
+              </div>
               </div>
             </div>
           </div>
         </div>
 
-        <footer class="page-footer indigo">
+        <footer class="page-footer grey darken-1">
         <div class="container">
           <div class="row">
             <div class="col l8 s12">
               <h5 class="white-text">About</h5>
               <p class="grey-text text-lighten-4">
-                Os dados deste trabalho foram coletados do Portal de Convênios do Governo Federal (SICONV), sendo portanto de uso público, conforme estipulado na Lei de Acesso à Informação (Lei nº 12.527 de 2011).
+                All data used by these visualizations were collected from Portal de Convênios do Governo Federal (SICONV), being, therefore, public, acoording to Brazilian Law of Information Access (Law  nº 12.527 of 2011).
               </p>
             </div>
             <div class="col l4 s12">
-              <h5 class="white-text">Integrantes</h5>
+              <h5 class="white-text">Made by</h5>
               <ul>
                 <li><a class="white-text" href="http://jemaf.github.io">João Eduardo Montandon</a></li>
                 <li><a class="white-text" href="#!">José Laerte Xavier</a></li>
@@ -61,7 +141,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container">
-          Made by <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+            Implemented as a final project of Data Visualization discipline at DCC/UFMG.
           </div>
         </div>
         </footer>
@@ -69,8 +149,161 @@
         <script src="js/vendor/d3.min.js"></script>
         <script src="js/vendor/alasql.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="js/main.js"></script>
+        <script type="text/javascript" src="js/vendor/materialize.js"></script>
+
         
-        <script type="text/javascript" src="js/vendor/materialize.min.js"></script>
+        <script src="js/constants.js"></script>
+        <script src="js/data.js"></script>
+        <script src="js/radar.js"></script>
+        <script src="js/stacked.js"></script>
+
+
+        
+        <script type="text/javascript" charset="utf-8"> 
+          $('.parallax').parallax();
+
+          function loadData2(data, stateId) {
+            if (stateId == undefined || stateId == "" || stateId == "BR") {
+              var filteredRadarData = getRadarData(data);
+              var filteredStackedData = handleData(data);
+              var filteredStackedCitiesData = getCityData(data);
+              var filteredStackedProgramData = getProgramData(data);
+
+              stateId = "BR";
+            } 
+
+            var state = STATES_DATA[stateId];
+            if (state) {
+              if (stateId != "BR") {
+                var filteredRadarData = getRadarData(data, stateId);
+                var filteredStackedData = handleData(data);
+                var filteredStackedCitiesData = getCityData(data, stateId);
+                var filteredStackedProgramData = getProgramData(data, stateId);
+              }
+
+              $(STATE_NAME_TEXT).text(state.name);
+              $(STATE_CAPITAL_TEXT).text(state.capital);
+              $(STATE_REGION_TEXT).text(state.region);
+              $(STATE_POPULATION_TEXT).text(state.population);
+              $(STATE_CITIES_TEXT).text(state.cities);
+              $(STATE_FLAG).attr("src", "img/" + stateId + ".png");  
+              $(TOTAL_CITIES_TEXT).text(filteredStackedCitiesData.total);
+              $(TOTAL_PROGRAMS_TEXT).text(filteredStackedProgramData.total);
+
+              if (stateId != "BR")
+                $(STATE_REGION_TEXT).parent().show();
+              else 
+                $(STATE_REGION_TEXT).parent().hide();
+            }
+          }
+
+        
+          loadData(function(err, data) {
+            // removes loading screen
+            $('body').toggleClass('loaded');
+
+            $(SEARCH_BUTTON).bind("enterKey",function(e){
+              loadData2(data, e.currentTarget.value);
+            });
+
+            $(SEARCH_BUTTON).keyup(function(e){
+              if(e.keyCode == 13)
+                $(this).trigger("enterKey");
+            });
+
+            loadData2(data);
+              
+            var radarData = getRadarData(data);
+            var stackedData = handleData(data);
+            var stackedCitiesData = getCityData(data);
+            var stackedProgramData = getProgramData(data);
+            var stackInvestmentStateData = getInvestmentStateData(data);
+            var stackInvestmentsCounterpartData = getInvestmentsCounterpartData(data);
+              
+            $(TOTAL_CITIES_TEXT).text(stackedCitiesData.total);
+            $(TOTAL_PROGRAMS_TEXT).text(stackedProgramData.total);
+
+            radar = radarChart();
+
+            radar()
+                .container(RADAR_CONTAINER)
+                .margin({top: 70, right: 70, bottom: 70, left: 70})
+                .width(230)
+                .height(230)
+                .data(radarData.items)
+                .color(d3.scale.ordinal().range(COLORS_REGION))
+                .maxValue(0.30)
+                .levels(4)
+                .roundStrokes(true)
+                .draw();
+
+            stackInvestmentsTotal = stackedChart();
+            stackInvestmentsCounterpart = stackedChart();
+            stackInvestmentsState = stackedChart();
+            stackCities = stackedChart();
+            stackPrograms = stackedChart();
+
+            stackInvestmentsTotal
+                .container(STACK_INVESTMENTS_TOTAL_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(900)
+                .height(250)
+                .data(stackedData)
+                .color(d3.scale.ordinal().range(COLORS))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
+                .yAxis({ orientation: "left" })
+                .nestKey("uf")
+                .draw();
+
+            stackInvestmentsCounterpart
+                .container(STACK_INVESTMENTS_COUNTERPART_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(400)
+                .height(200)
+                .data(stackInvestmentsCounterpartData)
+                .color(d3.scale.ordinal().range(COLORS))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
+                .yAxis({ orientation: "left" })
+                .nestKey("uf")
+                .draw();
+
+            stackInvestmentsState
+                .container(STACK_INVESTMENTS_STATE_CONTAINER)
+                .margin({top: 20, right: 30, bottom: 30, left: 40})
+                .width(400)
+                .height(200)
+                .data(stackInvestmentStateData)
+                .color(d3.scale.ordinal().range(COLORS))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years })
+                .yAxis({ orientation: "left" })
+                .nestKey("uf")
+                .draw();
+
+            stackCities
+                .container(STACK_TOTAL_CITIES_CONTAINER)
+                .margin({top: 0, right: 0, bottom: 0, left: 0})
+                .width(200)
+                .height(50)
+                .data(stackedCitiesData.items)
+                .color(d3.scale.ordinal().range(COLORS))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
+                .yAxis({ orientation: "left", tickSize: 0 })
+                .nestKey("uf")
+                .draw();
+
+
+            stackPrograms
+                .container(STACK_TOTAL_PROGRAMS_CONTAINER)
+                .margin({top: 0, right: 0, bottom: 0, left: 0})
+                .width(200)
+                .height(50)
+                .data(stackedProgramData.items)
+                .color(d3.scale.ordinal().range(COLORS))
+                .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
+                .yAxis({ orientation: "left", tickSize: 0 })
+                .nestKey("uf")
+                .draw();
+          });
+        </script>
     </body>
 </html>
