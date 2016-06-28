@@ -253,6 +253,7 @@
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
+                .hasTooltip(true)
                 .draw();
 
             stackInvestmentsCounterpart
@@ -265,6 +266,7 @@
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
+                .hasTooltip(true)
                 .draw();
 
             stackInvestmentsState
@@ -277,6 +279,7 @@
                 .xAxis({ orientation: "bottom", ticks: d3.time.years })
                 .yAxis({ orientation: "left" })
                 .nestKey("uf")
+                .hasTooltip(true)
                 .draw();
 
             stackCities
@@ -289,6 +292,7 @@
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("uf")
+                .hasTooltip(false)
                 .draw();
 
 
@@ -302,6 +306,7 @@
                 .xAxis({ orientation: "bottom", ticks: d3.time.years, tickSize: 0 })
                 .yAxis({ orientation: "left", tickSize: 0 })
                 .nestKey("uf")
+                .hasTooltip(false)
                 .draw();
           });
         </script>

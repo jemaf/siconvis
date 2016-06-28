@@ -50,6 +50,10 @@ function stackedChart() {
 
     var layers = stack(nest.entries(init.data()));
 
+    var div = d3.select("body").append("div") 
+      .attr("class", "tooltip")       
+      .style("opacity", 0);
+
     x.domain(d3.extent(init.data(), function(d) { return d.x; }));
     y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
 
@@ -68,8 +72,42 @@ function stackedChart() {
     svg.append("g")
         .attr("class", "y axis")
         .call(init.yAxis());
+
+    if(init.hasTooltip()){
+      svg.selectAll("path")
+      .attr("opacity", 1)
+      .on("mouseover", function(d, i) {
+          svg.selectAll("path").transition()
+              .duration(200)
+              .attr("opacity", function(d, j) {
+                return j != i ? 0.7 : 1;
+            });
+          div.transition()    
+            .duration(200)    
+            .style("opacity", .9);    
+          div.html(d.key)  
+            .style("left", (d3.event.pageX) + "px")   
+            .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d, i) {
+        svg.selectAll("path")
+            .transition()
+            .duration(500)
+            .attr("opacity", "1");
+          div.transition()    
+            .duration(500)    
+            .style("opacity", 0);
+      });
+    }
   };
 
+  init.hasTooltip = function(value) {
+    if (!arguments.length) 
+      return hasTooltip;
+
+    hasTooltip = value;
+    return init;
+  };
 
   init.container = function(value) {
     if (!arguments.length) 
