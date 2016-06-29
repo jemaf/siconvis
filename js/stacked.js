@@ -8,10 +8,10 @@ function stackedChart() {
   var init = new Object();
 
   init.draw = function() {
-    var x = d3.time.scale()
+    init._x = d3.time.scale()
         .range([0, init.width()]);
 
-    var y = d3.scale.linear()
+    init._y = d3.scale.linear()
         .range([init.height(), 0]);
 
     var z = init.color();
@@ -25,11 +25,11 @@ function stackedChart() {
     var nest = d3.nest()
         .key(function(d) { return d[init.nestKey()]; });
 
-    var area = d3.svg.area()
+    init._area = d3.svg.area()
         .interpolate("cardinal")
-        .x(function(d) { return x(d.x); })
-        .y0(function(d) { return y(d.y0); })
-        .y1(function(d) { return y(d.y0 + d.y); });
+        .x(function(d) { return init._x(d.x); })
+        .y0(function(d) { return init._y(d.y0); })
+        .y1(function(d) { return init._y(d.y0 + d.y); });
 
 
     //remove previous visualization (if it exists)
@@ -47,14 +47,14 @@ function stackedChart() {
       .attr("class", "tooltip")       
       .style("opacity", 0);
 
-    x.domain(d3.extent(init.data(), function(d) { return d.x; }));
-    y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
+    init._x.domain(d3.extent(init.data(), function(d) { return d.x; }));
+    init._y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
 
     svg.selectAll(".layer")
         .data(layers)
       .enter().append("path")
         .attr("class", "layer")
-        .attr("d", function(d) { return area(d.values); })
+        .attr("d", function(d) { return init._area(d.values); })
         .style("fill", function(d, i) { return z(i); });
 
     svg.append("g")
@@ -102,26 +102,46 @@ function stackedChart() {
     return init;
   };
 
-  init.animate = function(data, duration) {
-    // Scale the range of the data again 
-    // x.domain(d3.extent(data, function(d) { return d.x; }));
-    // y.domain([0, d3.max(data, function(d) { return d.y; })]);
 
-    // Select the section we want to apply our changes to
-    var svg = d3.select(container).transition();
+  init.toggleAnimation = function(duration) {
 
-    // Make the changes
-    svg.select(".line")   // change the line
-        .duration(duration)
-        .attr("d", function(d) { return area(d.values); });
-    svg.select(".x.axis") // change the x axis
-        .duration(duration)
-        .call(xAxis);
-    svg.select(".y.axis") // change the y axis
-        .duration(duration)
-        .call(yAxis);
+    if (init.alternativeData()) {
+      var nest = d3.nest()
+            .key(function(d) { return d[init.nestKey()]; });
+
+      var stack = d3.layout.stack()   
+        .offset("zero")
+        .values(function(d) { return d.values; })
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; });
+
+      // swap values
+      var d = init.alternativeData();
+      init.alternativeData(init.data());
+      init.data(d);
+      
+      // Scale the range of the data again 
+      var layers = stack(nest.entries(init.data()));
+
+      init._x.domain(d3.extent(init.data(), function(d) { return d.x; }));
+      init._y.domain([0, d3.max(init.data(), function(d) { return d.y0 + d.y; })]);
+
+      d3.select(init.container()).select("svg").selectAll(".layer")
+        .data(layers)
+        .transition()
+          .duration(duration)
+          .attr("d", function(d) { return init._area(d.values); });  
+    }
+    
   };
 
+  init.alternativeData = function(value) {
+    if (!arguments.length) 
+      return init._alternativeData;
+
+    init._alternativeData = value;
+    return init;
+  };
 
   init.container = function(value) {
     if (!arguments.length) 
