@@ -317,7 +317,7 @@ function getRadarData(data, state) {
   });
   records.items.push(temp);
 
-  var regions = state ? [STATES_DATA[state].region, "Brasil"] : ["Norte", "Nordeste", "Sul", "Sudeste"];
+  var regions = state ? ["Brasil"] : ["Norte", "Nordeste", "Sul", "Sudeste"];
 
   // query for each region in case a state is selected
   var regionCondition = "NM_ORGAO_CONCEDENTE = " + orgaos.join(" OR NM_ORGAO_CONCEDENTE = ");
