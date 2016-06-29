@@ -57,7 +57,7 @@ function loadData(callback) {
  */
 function handleData(data) {
   
-  var query = "SELECT UF_PROPONENTE AS uf, \
+  var query = "SELECT UF_PROPONENTE AS uf,\
           ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_GLOBAL) AS total FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
           GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
@@ -69,24 +69,28 @@ function handleData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
-  });
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
-
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
+  
   return records;
 };
 
@@ -110,23 +114,27 @@ function getInvestmentStateData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
-  });
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
 
   return records;
 };
@@ -151,23 +159,27 @@ function getInvestmentsCounterpartData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
-  });
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
 
   return records;
 };
@@ -194,23 +206,27 @@ function getCityData(data, state) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.cities;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.items.sort(function(a, b) {
-    return a.x - b.x;
-  });
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
 
-  records.items.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.items.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
+  records.items = [].concat(unsortedMap["Centro-Oeste"])
+                    .concat(unsortedMap["Nordeste"])
+                    .concat(unsortedMap["Norte"])
+                    .concat(unsortedMap["Sudeste"])
+                    .concat(unsortedMap["Sul"]);
 
   return records;
 };
@@ -237,23 +253,27 @@ function getProgramData(data, state) {
           stateCondition;
   records.total = alasql(query, [data])[0].assignments;
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.items.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.assignments;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.items.sort(function(a, b) {
-    return a.x - b.x;
-  });
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
 
-  records.items.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.items.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
+  records.items = [].concat(unsortedMap["Centro-Oeste"])
+                    .concat(unsortedMap["Nordeste"])
+                    .concat(unsortedMap["Norte"])
+                    .concat(unsortedMap["Sudeste"])
+                    .concat(unsortedMap["Sul"]);
 
   return records;
 };
