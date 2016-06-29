@@ -78,7 +78,9 @@ function stackedChart() {
           div.transition()    
             .duration(200)    
             .style("opacity", .9);    
-          div.html(d.key)  
+          div.html(d.key + "<p align='left'> 2009: " + d.values[0].total + "<br> 2010: " + d.values[1].total + "<br> 2011: " + d.values[2].total +
+            "<br> 2012: " + d.values[3].total + "<br> 2013: " + d.values[4].total + "<br> 2014: " + d.values[5].total +
+            "<br> 2015: " + d.values[6].total + "</p>")  
             .style("left", (d3.event.pageX) + "px")   
             .style("top", (d3.event.pageY - 28) + "px");
       })
