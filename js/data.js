@@ -57,7 +57,7 @@ function loadData(callback) {
  */
 function handleData(data) {
   
-  var query = "SELECT UF_PROPONENTE AS uf, \
+  var query = "SELECT UF_PROPONENTE AS uf,\
           ANO_ASSINATURA_CONVENIO AS ano, SUM(VL_GLOBAL) AS total FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016\
           GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
@@ -69,25 +69,42 @@ function handleData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
+
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
+  
+  // force deep copy to handle normalized values
+  var normalizedRecords = JSON.parse(JSON.stringify(records));
+
+  normalizedRecords.forEach(function(e) {
+    var totalByYear = 0;
+    unsortedMap[e.region].forEach(function(ie) {
+      totalByYear += ie.total;
+    });
+    e.y = e.y / totalByYear;
+    e.total = e.total / totalByYear;
+    e.x = format.parse(e.ano + "");
   });
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
-
-  return records;
+  return {"absolute": records, "normalized": normalizedRecords};
 };
 
 /**
@@ -105,30 +122,47 @@ function getInvestmentStateData(data) {
           ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
   var records = alasql(query, [data]);
 
-  // remove NaN values from collection
   records = records.filter(function(innerElement) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
+
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
+
+
+  // force deep copy to handle normalized values
+  var normalizedRecords = JSON.parse(JSON.stringify(records));
+
+  normalizedRecords.forEach(function(e) {
+    var totalByYear = 0;
+    unsortedMap[e.region].forEach(function(ie) {
+      totalByYear += ie.total;
+    });
+    e.y = e.y / totalByYear;
+    e.total = e.total / totalByYear;
+    e.x = format.parse(e.ano + "");
   });
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
-
-  return records;
+  return {"absolute": records, "normalized": normalizedRecords};
 };
 
 /**
@@ -151,42 +185,58 @@ function getInvestmentsCounterpartData(data) {
     return !isNaN(innerElement.ano);
   });
 
+  var unsortedMap = {"Centro-Oeste": [], "Nordeste": [], "Norte": [], "Sudeste": [], "Sul": []};
   var format = d3.time.format("%Y");
   records.forEach(function(d) {
     d.x = format.parse(d.ano + "");
     d.y = +d.total;
+    d.region = STATES_DATA[d.uf].region;
+    
+    unsortedMap[d.region].push(d);
   });
 
-  records.sort(function(a, b) {
-    return a.x - b.x;
+  for(item in unsortedMap) {
+    unsortedMap[item].sort(function(a, b) {
+      return a.x - b.x;
+    });
+  }
+
+  records = [].concat(unsortedMap["Centro-Oeste"])
+              .concat(unsortedMap["Nordeste"])
+              .concat(unsortedMap["Norte"])
+              .concat(unsortedMap["Sudeste"])
+              .concat(unsortedMap["Sul"]);
+
+  // force deep copy to handle normalized values
+  var normalizedRecords = JSON.parse(JSON.stringify(records));
+
+  normalizedRecords.forEach(function(e) {
+    var totalByYear = 0;
+    unsortedMap[e.region].forEach(function(ie) {
+      totalByYear += ie.total;
+    });
+    e.y = e.y / totalByYear;
+    e.total = e.total / totalByYear;
+    e.x = format.parse(e.ano + "");
   });
 
-  records.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
-
-  return records;
+  return {"absolute": records, "normalized": normalizedRecords};
 };
 
 function getCityData(data, state) {
   var records = {items: [], total: 0};
 
   var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
-  var query = "SELECT UF_PROPONENTE AS uf, \
+  var query = "SELECT \
           ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT NM_MUNICIPIO_PROPONENTE) AS cities FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
           stateCondition +
-          " GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
-          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+          " GROUP BY ANO_ASSINATURA_CONVENIO \
+          ORDER BY ANO_ASSINATURA_CONVENIO";
   records.items = alasql(query, [data]);
 
   var queryTotalCities = "SELECT COUNT(DISTINCT NM_MUNICIPIO_PROPONENTE) AS total_cities FROM ? \
-          WHERE ANO_ASSINATURA_CONVENIO > 2008  AND ANO_ASSINATURA_CONVENIO < 2016" +
-          stateCondition;
+          WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" + stateCondition;
   records.total = alasql(queryTotalCities, [data])[0].total_cities;
 
   // remove NaN values from collection
@@ -204,14 +254,6 @@ function getCityData(data, state) {
     return a.x - b.x;
   });
 
-  records.items.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.items.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
-  });
-
   return records;
 };
 
@@ -219,12 +261,12 @@ function getProgramData(data, state) {
   var records = {items: [], total: 0};
   
   var stateCondition = state ? " AND UF_PROPONENTE = '" + state + "'" : " ";
-  var query = "SELECT UF_PROPONENTE AS uf, \
+  var query = "SELECT \
           ANO_ASSINATURA_CONVENIO AS ano, COUNT(DISTINCT ID_CONVENIO) as assignments FROM ? \
           WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" +
           stateCondition +
-          " GROUP BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO \
-          ORDER BY UF_PROPONENTE, ANO_ASSINATURA_CONVENIO";
+          " GROUP BY ANO_ASSINATURA_CONVENIO \
+          ORDER BY ANO_ASSINATURA_CONVENIO";
   records.items = alasql(query, [data]);
 
   // remove NaN values from collection
@@ -233,8 +275,7 @@ function getProgramData(data, state) {
   });
 
   query = "SELECT COUNT(DISTINCT ID_CONVENIO) assignments FROM ? \
-          WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" +
-          stateCondition;
+          WHERE ANO_ASSINATURA_CONVENIO > 2008 AND ANO_ASSINATURA_CONVENIO < 2016" + stateCondition;
   records.total = alasql(query, [data])[0].assignments;
 
   var format = d3.time.format("%Y");
@@ -245,14 +286,6 @@ function getProgramData(data, state) {
 
   records.items.sort(function(a, b) {
     return a.x - b.x;
-  });
-
-  records.items.forEach(function(e){
-    e.region = STATES_DATA[e.uf].region; 
-  });
-
-  records.items.sort(function(a, b) {
-    return a.region < b.region ? -1 : a.region > b.region;
   });
 
   return records;
@@ -284,7 +317,7 @@ function getRadarData(data, state) {
   });
   records.items.push(temp);
 
-  var regions = state ? [STATES_DATA[state].region, "Brasil"] : ["Norte", "Nordeste", "Sul", "Sudeste"];
+  var regions = state ? ["Brasil"] : ["Norte", "Nordeste", "Sul", "Sudeste"];
 
   // query for each region in case a state is selected
   var regionCondition = "NM_ORGAO_CONCEDENTE = " + orgaos.join(" OR NM_ORGAO_CONCEDENTE = ");

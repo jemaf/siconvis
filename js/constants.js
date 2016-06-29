@@ -20,6 +20,7 @@ const TOTAL_CITIES_TEXT 				 = "#total-cities-label";
 const TOTAL_PROGRAMS_TEXT 				 = "#total-programs-label";
 
 //state's details text constants
+const NORMALIZE_BUTTON                   = "#normalize";
 const SEARCH_BUTTON						 = "#search";
 const STATE_NAME_TEXT 					 = ".state-name";
 const STATE_CAPITAL_TEXT 				 = "#state-capital";
